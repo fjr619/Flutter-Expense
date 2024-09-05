@@ -18,7 +18,7 @@ class Expense {
 
   SubCategory? subCategory;
 
-  Receipt? receipt;
+  final receipts = IsarLinks<Receipt>();
 
   @Index(composite: [CompositeIndex('amount')])
   String? paymentMethod;

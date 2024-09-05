@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_expensetracker/collection/budget.dart';
+import 'package:flutter_expensetracker/collection/expense.dart';
+import 'package:flutter_expensetracker/collection/income.dart';
+import 'package:flutter_expensetracker/collection/receipt.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -10,7 +14,9 @@ void main() async {
   final dir = await getApplicationDocumentsDirectory();
 
   if (Isar.instanceNames.isEmpty) {
-    isar = await Isar.open([], directory: dir.path, name: 'expenseInstance');
+    isar = await Isar.open(
+        [BudgetSchema, ExpenseSchema, ReceiptSchema, IncomeSchema],
+        directory: dir.path, name: 'expenseInstance');
   }
 
   runApp(const MyApp());

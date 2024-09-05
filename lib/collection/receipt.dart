@@ -11,5 +11,6 @@ class Receipt {
 
   late String name;
 
-  Expense? expense;
+  @Backlink(to: 'receipts')
+  final expense = IsarLink<Expense>();
 }
