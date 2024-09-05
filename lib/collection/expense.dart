@@ -7,7 +7,10 @@ part 'expense.g.dart';
 class Expense {
   Id id = Isar.autoIncrement;
 
+  @Index()
   late double amount;
+
+  @Index()
   late DateTime date;
 
   @Enumerated(EnumType.name)
@@ -17,8 +20,10 @@ class Expense {
 
   Receipt? receipt;
 
+  @Index(composite: [CompositeIndex('amount')])
   String? paymentMethod;
 
+  @Index(type: IndexType.value, caseSensitive: false)
   List<String>? description;
 }
 
