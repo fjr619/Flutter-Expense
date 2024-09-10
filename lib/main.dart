@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_expensetracker/domain/models/budget.dart';
-import 'package:flutter_expensetracker/domain/models/expense.dart';
-import 'package:flutter_expensetracker/domain/models/income.dart';
-import 'package:flutter_expensetracker/domain/models/receipt.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
-
-late Isar isar;
+import 'package:flutter/services.dart';
+import 'package:flutter_expensetracker/presentation/navigation/app_navigation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final dir = await getApplicationDocumentsDirectory();
+  // make navigation bar transparent
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
 
-  if (Isar.instanceNames.isEmpty) {
-    isar = await Isar.open(
-        [BudgetSchema, ExpenseSchema, ReceiptSchema, IncomeSchema],
-        directory: dir.path, name: 'expenseInstance');
-  }
+  // make flutter draw behind navigation bar
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -28,13 +28,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      title: 'Expense tracker',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(color: Colors.white),
+        textTheme: Theme.of(context).textTheme.apply(fontFamily: GoogleFonts.poppins().fontFamily),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Scaffold(),
+      debugShowCheckedModeBanner: false,
+      routerConfig: AppNavigation.router,
     );
   }
 }

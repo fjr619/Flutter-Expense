@@ -1,10 +1,13 @@
 import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/domain/repositories/expense_repository.dart';
-import 'package:flutter_expensetracker/main.dart';
 import 'package:isar/isar.dart';
 
 class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
+  final Isar isar; // Injected Isar instance
+
+  ExpenseRepositoryImpl(this.isar); // Constructor injection of Isar
+
   @override
   Future<void> createMultipleObjects(List<Expense> collections) async {
     await isar.writeTxn(() async {
