@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_expensetracker/collection/budget.dart';
-import 'package:flutter_expensetracker/collection/expense.dart';
-import 'package:flutter_expensetracker/collection/income.dart';
-import 'package:flutter_expensetracker/collection/receipt.dart';
+import 'package:flutter_expensetracker/domain/models/budget.dart';
+import 'package:flutter_expensetracker/domain/models/expense.dart';
+import 'package:flutter_expensetracker/domain/models/income.dart';
+import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 

@@ -1,9 +1,9 @@
-import 'package:flutter_expensetracker/collection/receipt.dart';
+import 'package:flutter_expensetracker/domain/models/receipt.dart';
+import 'package:flutter_expensetracker/domain/repositories/receipt_repository.dart';
 import 'package:flutter_expensetracker/main.dart';
-import 'package:flutter_expensetracker/repository/repository.dart';
 import 'package:isar/isar.dart';
 
-class ReceiptRepository extends Repository<Receipt> {
+class ReceiptRepositoryImpl extends ReceiptRepository<Receipt> {
   @override
   Future<void> createMultipleObjects(List<Receipt> collections) async {
     await isar.writeTxn(() async {
@@ -56,6 +56,7 @@ class ReceiptRepository extends Repository<Receipt> {
     });
   }
 
+  @override
   Future<void> uploadReceipts(List<Receipt> receipts) async {
     await isar.writeTxn(() async {
       for (Receipt receipt in receipts) {
@@ -64,6 +65,7 @@ class ReceiptRepository extends Repository<Receipt> {
     });
   }
 
+  @override
   Future<List<Receipt>> downloadReceipts() async {
     int totalReceipts = await isar.receipts.where().count();
 
@@ -80,6 +82,7 @@ class ReceiptRepository extends Repository<Receipt> {
     return all;
   }
 
+  @override
   Future<void> clearGallery(List<Receipt> receipts) async {
     await isar.writeTxn(() async {
       for (int i = 0; i < receipts.length; i++) {

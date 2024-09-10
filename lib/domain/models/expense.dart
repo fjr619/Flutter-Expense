@@ -1,4 +1,4 @@
-import 'package:flutter_expensetracker/collection/receipt.dart';
+import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:isar/isar.dart';
 
 part 'expense.g.dart';

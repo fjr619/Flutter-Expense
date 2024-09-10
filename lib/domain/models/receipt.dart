@@ -1,5 +1,5 @@
 
-import 'package:flutter_expensetracker/collection/expense.dart';
+import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:isar/isar.dart';
 
 

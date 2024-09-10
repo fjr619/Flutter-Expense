@@ -1,9 +1,9 @@
-import 'package:flutter_expensetracker/collection/income.dart';
+import 'package:flutter_expensetracker/domain/models/income.dart';
+import 'package:flutter_expensetracker/domain/repositories/income_repository.dart';
 import 'package:flutter_expensetracker/main.dart';
-import 'package:flutter_expensetracker/repository/repository.dart';
 import 'package:isar/isar.dart';
 
-class IncomeRepository extends Repository<Income> {
+class IncomeRepositoryImpl extends IncomeRepository<Income> {
   @override
   Future<void> createMultipleObjects(List<Income> collections) async {
     await isar.writeTxn(() async {

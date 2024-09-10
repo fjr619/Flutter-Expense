@@ -1,9 +1,9 @@
-import 'package:flutter_expensetracker/collection/budget.dart';
+import 'package:flutter_expensetracker/domain/models/budget.dart';
+import 'package:flutter_expensetracker/domain/repositories/budget_repository.dart';
 import 'package:flutter_expensetracker/main.dart';
-import 'package:flutter_expensetracker/repository/repository.dart';
 import 'package:isar/isar.dart';
 
-class BudgetRepository extends Repository<Budget> {
+class BudgetRepositoryImpl extends BudgetRepository<Budget> {
   @override
   Future<void> createMultipleObjects(List<Budget> collections) async {
     await isar.writeTxn(() async {
@@ -60,6 +60,7 @@ class BudgetRepository extends Repository<Budget> {
     return getObjectById(collection.id);
   }
 
+  @override
   Future<Budget?> getObjectByDate(
       {required int month, required int year}) async {
     return await isar.budgets
