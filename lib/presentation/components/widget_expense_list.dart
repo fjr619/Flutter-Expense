@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_empty.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_list_with_filter.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_list_without_filter.dart';
