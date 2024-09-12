@@ -2,6 +2,8 @@ import 'package:flutter_expensetracker/domain/models/budget.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/domain/repositories/budget_repository.dart';
 import 'package:flutter_expensetracker/domain/repositories/expense_repository.dart';
+import 'package:flutter_expensetracker/presentation/screens/expense/expense_state.dart';
+import 'package:flutter_expensetracker/presentation/screens/expense/expense_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_state.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_viewmodel.dart';
 import 'package:flutter_expensetracker/provider/repository_provider.dart';
@@ -19,3 +21,8 @@ final homeViewmodelProvider = StateNotifierProvider<HomeViewmodel, HomeState>(
     );
   },
 );
+
+final expenseViewmodelProvider =
+    StateNotifierProvider<ExpenseViewmodel, ExpenseState>((ref) {
+  return ExpenseViewmodel();
+});

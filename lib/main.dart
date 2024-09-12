@@ -59,7 +59,18 @@ class MyApp extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(
             fontFamily: GoogleFonts.poppins().fontFamily,
             bodyColor: Colors.teal),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.teal, // Cursor color
+          selectionColor: Colors.teal[100], // Text selection highlight color
+          selectionHandleColor: Colors.teal, // Handles color
+        ),
+        colorScheme: const ColorScheme.light(
+          primary: Colors.teal, // Header background color (year/month picker)
+          onPrimary: Colors.white, // Header text color
+          surface: Colors.white, // Background color of the dialog
+          onSurface: Colors.teal, // Color of the days in the calendar grid
+        ),
+        dialogBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,

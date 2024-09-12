@@ -12,11 +12,16 @@ class AppNavigation {
 
   // Private navigators
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
-  static final _shellNavigatorHome = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
-  static final _shellNavigatorExpense = GlobalKey<NavigatorState>(debugLabel: 'shellExpense');
-  static final _shellNavigatorStats = GlobalKey<NavigatorState>(debugLabel: 'shellStats');
-  static final _shellNavigatorGallery = GlobalKey<NavigatorState>(debugLabel: 'shellGallery');
-  static final _shellNavigatorSettings = GlobalKey<NavigatorState>(debugLabel: 'shellSettings');
+  static final _shellNavigatorHome =
+      GlobalKey<NavigatorState>(debugLabel: 'shellHome');
+  static final _shellNavigatorExpense =
+      GlobalKey<NavigatorState>(debugLabel: 'shellExpense');
+  static final _shellNavigatorStats =
+      GlobalKey<NavigatorState>(debugLabel: 'shellStats');
+  static final _shellNavigatorGallery =
+      GlobalKey<NavigatorState>(debugLabel: 'shellGallery');
+  static final _shellNavigatorSettings =
+      GlobalKey<NavigatorState>(debugLabel: 'shellSettings');
 
   // GoRouter configuration
   static final GoRouter router = GoRouter(

@@ -51,7 +51,7 @@ class WidgetHeader extends StatelessWidget {
             ),
           ),
           actions: [
-            ElevatedButton(
+            TextButton(
               onPressed: () {
                 context.pop();
                 submitBudget(double.parse(budgetController.text));
