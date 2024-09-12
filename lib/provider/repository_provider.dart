@@ -1,18 +1,20 @@
 // Define the BudgetRepository provider
 import 'package:flutter_expensetracker/data/repositories/budget_repository_impl.dart';
 import 'package:flutter_expensetracker/data/repositories/expense_repository_impl.dart';
+import 'package:flutter_expensetracker/domain/models/budget.dart';
+import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/domain/repositories/budget_repository.dart';
 import 'package:flutter_expensetracker/domain/repositories/expense_repository.dart';
 import 'package:flutter_expensetracker/provider/isar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 
-final budgetRepositoryProvider = Provider<BudgetRepository>((ref) {
+final budgetRepositoryProvider = Provider<BudgetRepository<Budget>>((ref) {
   final Isar isar = ref.watch(isarProvider);
   return BudgetRepositoryImpl(isar);
 });
 
-final expenseRepositoryProvider = Provider<ExpenseRepository>((ref) {
+final expenseRepositoryProvider = Provider<ExpenseRepository<Expense>>((ref) {
   final Isar isar = ref.watch(isarProvider);
   return ExpenseRepositoryImpl(isar);
 });

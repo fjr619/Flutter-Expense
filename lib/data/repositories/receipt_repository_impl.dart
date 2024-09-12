@@ -34,8 +34,8 @@ class ReceiptRepositoryImpl extends ReceiptRepository<Receipt> {
   }
 
   @override
-  Future<List<Receipt>> getAllObjects() async {
-    return await isar.receipts.where().findAll();
+  Stream<List<Receipt>> getAllObjects() {
+    return isar.receipts.where().watch(fireImmediately: true);
   }
 
   @override

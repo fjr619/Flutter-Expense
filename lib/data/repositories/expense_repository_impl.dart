@@ -35,8 +35,8 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<List<Expense>> getAllObjects() async {
-    return await isar.expenses.where().findAll();
+  Stream<List<Expense>> getAllObjects() {
+    return isar.expenses.where().watch(fireImmediately: true);
   }
 
   @override
@@ -61,17 +61,21 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<List<Expense>> getObjectsByToday() async {
-    return await isar.expenses
+  Stream<List<Expense>> getObjectsByToday() {
+    return isar.expenses
         .where()
-        .dateEqualTo(
-            DateTime.now().copyWith(hour: 0, minute: 0, second: 0, microsecond: 0, millisecond: 0))
-        .findAll();
+        .dateEqualTo(DateTime.now().copyWith(
+            hour: 0, minute: 0, second: 0, microsecond: 0, millisecond: 0))
+        .watch(fireImmediately: true);
   }
 
   @override
   Future<double> getSumForCategory(CategoryEnum value) async {
-    return await isar.expenses.filter().categoryEqualTo(value).amountProperty().sum();
+    return await isar.expenses
+        .filter()
+        .categoryEqualTo(value)
+        .amountProperty()
+        .sum();
   }
 
   @override
@@ -80,7 +84,8 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<List<Expense>> getObjectsByAmountRange(double lowAmount, double highAmount) async {
+  Future<List<Expense>> getObjectsByAmountRange(
+      double lowAmount, double highAmount) async {
     return await isar.expenses
         .filter()
         .amountBetween(lowAmount, highAmount, includeLower: false)
@@ -88,8 +93,12 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<List<Expense>> getObjectsWithAmountGreaterThan(double amountValue) async {
-    return await isar.expenses.filter().amountGreaterThan(amountValue).findAll();
+  Future<List<Expense>> getObjectsWithAmountGreaterThan(
+      double amountValue) async {
+    return await isar.expenses
+        .filter()
+        .amountGreaterThan(amountValue)
+        .findAll();
   }
 
   @override
@@ -98,7 +107,8 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<List<Expense>> getObjectsByOptions(CategoryEnum value, double amountHighValue) async {
+  Future<List<Expense>> getObjectsByOptions(
+      CategoryEnum value, double amountHighValue) async {
     return await isar.expenses
         .filter()
         .categoryEqualTo(value)
@@ -109,15 +119,21 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
 
   @override
   Future<List<Expense>> getObjectsNotOthersCategory() async {
-    return await isar.expenses.filter().not().categoryEqualTo(CategoryEnum.others).findAll();
+    return await isar.expenses
+        .filter()
+        .not()
+        .categoryEqualTo(CategoryEnum.others)
+        .findAll();
   }
 
   @override
-  Future<List<Expense>> getObjectsByGroupFilter(String searchText, DateTime dateTime) async {
+  Future<List<Expense>> getObjectsByGroupFilter(
+      String searchText, DateTime dateTime) async {
     return await isar.expenses
         .filter()
         .categoryEqualTo(CategoryEnum.others)
-        .group((q) => q.paymentMethodContains(searchText).or().dateEqualTo(dateTime))
+        .group((q) =>
+            q.paymentMethodContains(searchText).or().dateEqualTo(dateTime))
         .findAll();
   }
 
@@ -132,7 +148,8 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<List<Expense>> getObjectsUsingAnyOf(List<CategoryEnum> categories) async {
+  Future<List<Expense>> getObjectsUsingAnyOf(
+      List<CategoryEnum> categories) async {
     return await isar.expenses
         .filter()
         .anyOf(categories, (q, CategoryEnum cat) => q.categoryEqualTo(cat))
@@ -140,7 +157,8 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<List<Expense>> getObjectsUsingAllOf(List<CategoryEnum> categories) async {
+  Future<List<Expense>> getObjectsUsingAllOf(
+      List<CategoryEnum> categories) async {
     return await isar.expenses
         .filter()
         .allOf(categories, (q, CategoryEnum cat) => q.categoryEqualTo(cat))
@@ -154,7 +172,10 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
 
   @override
   Future<List<Expense>> getObjectsWithTags(int tags) async {
-    return await isar.expenses.filter().descriptionLengthEqualTo(tags).findAll();
+    return await isar.expenses
+        .filter()
+        .descriptionLengthEqualTo(tags)
+        .findAll();
   }
 
   @override
@@ -167,7 +188,10 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
 
   @override
   Future<List<Expense>> getObjectsBySubCategory(String subCategory) async {
-    return await isar.expenses.filter().subCategory((q) => q.nameEqualTo(subCategory)).findAll();
+    return await isar.expenses
+        .filter()
+        .subCategory((q) => q.nameEqualTo(subCategory))
+        .findAll();
   }
 
   @override
@@ -233,7 +257,11 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
 
   @override
   Future<double> totalExpensesByCategory() async {
-    return await isar.expenses.where().distinctByCategory().amountProperty().sum();
+    return await isar.expenses
+        .where()
+        .distinctByCategory()
+        .amountProperty()
+        .sum();
   }
 
   @override

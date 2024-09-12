@@ -34,8 +34,8 @@ class IncomeRepositoryImpl extends IncomeRepository<Income> {
   }
 
   @override
-  Future<List<Income>> getAllObjects() async {
-    return await isar.incomes.where().findAll();
+  Stream<List<Income>> getAllObjects() {
+    return isar.incomes.where().watch();
   }
 
   @override

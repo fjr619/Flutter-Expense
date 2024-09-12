@@ -2,7 +2,7 @@ import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/domain/repositories/repository.dart';
 
 abstract class ExpenseRepository<T> extends Repository<T> {
-  Future<List<Expense>> getObjectsByToday();
+  Stream<List<Expense>> getObjectsByToday();
   Future<double> getSumForCategory(CategoryEnum value);
   Future<List<Expense>> getObjectsByCategory(CategoryEnum value);
   Future<List<Expense>> getObjectsByAmountRange(double lowAmount, double highAmount);

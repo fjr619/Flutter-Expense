@@ -36,8 +36,8 @@ class BudgetRepositoryImpl extends BudgetRepository<Budget> {
   }
 
   @override
-  Future<List<Budget>> getAllObjects() async {
-    return await isar.budgets.where().findAll();
+  Stream<List<Budget>> getAllObjects() {
+    return isar.budgets.where().watch(fireImmediately: true);
   }
 
   @override

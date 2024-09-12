@@ -7,7 +7,7 @@ abstract class Repository<T> {
 
   Future<List<T?>> getObjectsById(List<int> ids);
 
-  Future<List<T>> getAllObjects();
+  Stream<List<T>> getAllObjects();
 
   Future<void> updateObject(T collection);
 

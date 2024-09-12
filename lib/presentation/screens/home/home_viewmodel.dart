@@ -1,16 +1,20 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_expensetracker/domain/models/budget.dart';
+import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/domain/repositories/budget_repository.dart';
 import 'package:flutter_expensetracker/domain/repositories/expense_repository.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeViewmodel extends StateNotifier<HomeState> {
-  final BudgetRepository budgetRepository;
-  final ExpenseRepository expenseRepository;
+  final BudgetRepository<Budget> budgetRepository;
+  final ExpenseRepository<Expense> expenseRepository;
 
   StreamSubscription<Budget?>? _budgetSubscription;
+  StreamSubscription<List<Expense>>? _allExpenseSubscription;
+  StreamSubscription<List<Expense>>? _todayExpenseSubscription;
 
   HomeViewmodel({
     required this.budgetRepository,
@@ -18,6 +22,14 @@ class HomeViewmodel extends StateNotifier<HomeState> {
   }) : super(HomeState()) {
     getBudget();
     getExpenseTotal();
+  }
+
+  @override
+  void dispose() {
+    _budgetSubscription?.cancel();
+    _allExpenseSubscription?.cancel();
+    _todayExpenseSubscription?.cancel();
+    super.dispose();
   }
 
   void getBudget({int? month, int? year}) {
@@ -30,6 +42,24 @@ class HomeViewmodel extends StateNotifier<HomeState> {
         budgetRepository.getObjectByDate(month: month, year: year).listen(
       (budget) {
         state = state.copyWith(budget: budget);
+      },
+    );
+  }
+
+  void getAllExpense() {
+    _allExpenseSubscription?.cancel();
+    _allExpenseSubscription = expenseRepository.getAllObjects().listen(
+      (expenses) {
+        // state = state.copyWith(expenses: expenses);
+      },
+    );
+  }
+
+  void getTodayExpense() {
+    _todayExpenseSubscription?.cancel();
+    _todayExpenseSubscription = expenseRepository.getObjectsByToday().listen(
+      (expenses) {
+        // state = state.copyWith(expenses: expenses);
       },
     );
   }
@@ -49,13 +79,7 @@ class HomeViewmodel extends StateNotifier<HomeState> {
       return await budgetRepository.createObject(budget);
     } else {
       state.budget!.amount = amount;
-      return await budgetRepository.updateObject(state.budget);
+      return await budgetRepository.updateObject(state.budget!);
     }
-  }
-
-  @override
-  void dispose() {
-    _budgetSubscription?.cancel();
-    super.dispose();
   }
 }
