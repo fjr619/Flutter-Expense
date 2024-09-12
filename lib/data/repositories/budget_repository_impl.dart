@@ -64,7 +64,14 @@ class BudgetRepositoryImpl extends BudgetRepository<Budget> {
   }
 
   @override
-  Future<Budget?> getObjectByDate({required int month, required int year}) async {
-    return await isar.budgets.filter().monthEqualTo(month).yearEqualTo(year).findFirst();
+  Stream<Budget?> getObjectByDate({required int month, required int year}) {
+    return isar.budgets
+        .filter()
+        .monthEqualTo(month)
+        .yearEqualTo(year)
+        .watch(fireImmediately: true)
+        .map(
+          (budgets) => budgets.isNotEmpty ? budgets.first : null,
+        );
   }
 }

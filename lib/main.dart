@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_expensetracker/domain/models/budget.dart';
+import 'package:flutter_expensetracker/domain/models/expense.dart';
+import 'package:flutter_expensetracker/domain/models/income.dart';
+import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/presentation/navigation/app_navigation.dart';
+import 'package:flutter_expensetracker/provider/isar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  Isar isar;
+  final dir = await getApplicationDocumentsDirectory();
+  if (Isar.instanceNames.isEmpty) {
+    isar = await Isar.open(
+        [BudgetSchema, ExpenseSchema, ReceiptSchema, IncomeSchema],
+        directory: dir.path, name: 'expenseInstance');
+  }
+  isar = Isar.getInstance('expenseInstance')!;
 
   // make navigation bar transparent
   SystemChrome.setSystemUIOverlayStyle(
@@ -19,7 +35,14 @@ void main() async {
   // make flutter draw behind navigation bar
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        isarProvider.overrideWithValue(isar),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -33,7 +56,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(color: Colors.white),
-        textTheme: Theme.of(context).textTheme.apply(fontFamily: GoogleFonts.poppins().fontFamily),
+        textTheme: Theme.of(context).textTheme.apply(
+            fontFamily: GoogleFonts.poppins().fontFamily,
+            bodyColor: Colors.teal),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),

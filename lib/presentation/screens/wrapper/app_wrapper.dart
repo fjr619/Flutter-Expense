@@ -12,30 +12,40 @@ class AppWrapper extends StatelessWidget {
         tabs: [
           PersistentRouterTabConfig(
             item: ItemConfig(
+              activeColorSecondary: Colors.teal.withAlpha(20),
+              activeForegroundColor: Colors.teal,
               icon: const Icon(Icons.home_rounded),
               title: "Home",
             ),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
+              activeColorSecondary: Colors.teal.withAlpha(20),
+              activeForegroundColor: Colors.teal,
               icon: const Icon(Icons.add_rounded),
               title: "Expense",
             ),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
+              activeColorSecondary: Colors.teal.withAlpha(20),
+              activeForegroundColor: Colors.teal,
               icon: const Icon(Icons.show_chart_rounded),
               title: "Stats",
             ),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
+              activeColorSecondary: Colors.teal.withAlpha(20),
+              activeForegroundColor: Colors.teal,
               icon: const Icon(Icons.photo_album_rounded),
               title: "Gallery",
             ),
           ),
           PersistentRouterTabConfig(
             item: ItemConfig(
+              activeColorSecondary: Colors.teal.withAlpha(20),
+              activeForegroundColor: Colors.teal,
               icon: const Icon(Icons.add),
               title: "Settings",
             ),
