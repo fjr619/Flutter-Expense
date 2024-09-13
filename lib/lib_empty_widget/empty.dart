@@ -121,7 +121,7 @@ class _EmptyListWidgetState extends State<EmptyWidget>
           );
         },
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(0),
           child: Image.asset(
             isPackageImage ? _packageImage.encode()! : widget.image!,
             fit: BoxFit.contain,
@@ -200,10 +200,10 @@ class _EmptyListWidgetState extends State<EmptyWidget>
               LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                 return Container(
-                  height: constraints.maxWidth,
+                  height: constraints.maxHeight,
                   width: constraints.maxWidth - 30,
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,

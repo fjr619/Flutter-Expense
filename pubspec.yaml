@@ -41,10 +41,11 @@ dependencies:
   flutter_riverpod: ^2.5.1
   google_fonts: ^6.2.1
   go_router: ^14.2.7
-  persistent_bottom_nav_bar_v2: ^5.3.0
   intl: ^0.19.0
   percent_indicator: ^4.2.3
   gap: ^3.0.1
+  salomon_bottom_bar: ^3.3.2
+  file_picker: ^8.1.2
 
 dev_dependencies:
   flutter_test:

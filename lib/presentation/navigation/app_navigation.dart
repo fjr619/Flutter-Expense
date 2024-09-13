@@ -5,6 +5,7 @@ import 'package:flutter_expensetracker/presentation/screens/home/home_screen.dar
 import 'package:flutter_expensetracker/presentation/screens/settings/settings_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/stats_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/wrapper/app_wrapper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class AppNavigation {
@@ -31,7 +32,7 @@ class AppNavigation {
       routes: [
         StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            return AppWrapper(navigationShell: navigationShell);
+            return MainWrapper(navigationShell: navigationShell);
           },
           branches: [
             StatefulShellBranch(
@@ -48,10 +49,19 @@ class AppNavigation {
               navigatorKey: _shellNavigatorExpense,
               routes: [
                 GoRoute(
-                  path: "/expense",
-                  name: "expense",
-                  builder: (context, state) => const ExpenseScreen(),
-                ),
+                    path: "/expense",
+                    name: "expense",
+                    pageBuilder: (context, state) {
+                      return MaterialPage(
+                        key: state.pageKey,
+                        child: ExpenseScreen(
+                          key: ProviderScope.containerOf(context)
+                              .read(expenseScreenKeyProvider),
+                        ),
+                        restorationId:
+                            'expense_route', // Enable state restoration
+                      );
+                    }),
               ],
             ),
             StatefulShellBranch(

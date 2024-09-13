@@ -9,15 +9,12 @@ class WidgetEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: EmptyWidget(
-        hideBackgroundAnimation: true,
-        image: null,
-        packageImage: PackageImage.Image_1,
-        subTitle: subtitle,
-        subtitleTextStyle: const TextStyle(color: Colors.teal),
-      ),
+    return EmptyWidget(
+      hideBackgroundAnimation: true,
+      image: null,
+      packageImage: PackageImage.Image_1,
+      subTitle: subtitle,
+      subtitleTextStyle: const TextStyle(color: Colors.teal),
     );
   }
 }

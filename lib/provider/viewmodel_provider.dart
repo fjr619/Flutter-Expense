@@ -23,6 +23,5 @@ final homeViewmodelProvider = StateNotifierProvider<HomeViewmodel, HomeState>(
 );
 
 final expenseViewmodelProvider =
-    StateNotifierProvider<ExpenseViewmodel, ExpenseState>((ref) {
-  return ExpenseViewmodel();
-});
+    StateNotifierProvider<ExpenseViewmodel, ExpenseState>(
+        (ref) => ExpenseViewmodel());
