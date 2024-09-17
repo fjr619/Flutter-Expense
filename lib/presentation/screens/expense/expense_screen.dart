@@ -12,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 final expenseScreenKeyProvider =
     Provider((ref) => GlobalKey<_ExpenseScreenState>());
@@ -29,9 +30,18 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
   final TextEditingController _amountTextController = TextEditingController();
   final TextEditingController _subCatTextController = TextEditingController();
   final TextEditingController _fileTextController = TextEditingController();
-  final TextEditingController _descTextController = TextEditingController();
+  final StringTagController _descTextController = StringTagController();
   late final ExpenseViewmodel expenseViewmodel =
       ref.read(expenseViewmodelProvider.notifier);
+
+  bool showLoadingReceipt = false;
+  double _distanceToField = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _distanceToField = MediaQuery.of(context).size.width;
+  }
 
   @override
   void dispose() {
@@ -49,8 +59,8 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
     _amountTextController.clear();
     _subCatTextController.clear();
     _fileTextController.clear();
-    _descTextController.clear();
-
+    _descTextController.clearTags();
+    // _descTextController.getFocusNode?.unfocus();
     FocusScope.of(context).unfocus();
 
     if (_scrollController.hasClients) {
@@ -75,8 +85,6 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
     }
     return null;
   }
-
-  bool showLoadingReceipt = false;
 
   Widget _textFormAmount(ExpenseState expenseState) {
     return TextFormField(
@@ -377,6 +385,125 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
               _receiptImage(context, expenseState),
               const Gap(10),
               const WidgetTitle(title: 'Notes', clr: Colors.black),
+              TextFieldTags(
+                textfieldTagsController: _descTextController,
+                initialTags: const <String>[],
+                textSeparators: const [' ', ','],
+                letterCase: LetterCase.normal,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter tag';
+                  } else if (_descTextController.getTags!.contains(value)) {
+                    return 'You\'ve already entered that';
+                  }
+                  return null;
+                },
+                inputFieldBuilder: (context, inputFieldValues) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: TextField(
+                      controller: inputFieldValues.textEditingController,
+                      focusNode: inputFieldValues.focusNode,
+                      onChanged: inputFieldValues.onTagChanged,
+                      onSubmitted: inputFieldValues.onTagSubmitted,
+                      decoration: InputDecoration(
+                          isDense: true,
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.teal,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.teal,
+                              width: 1.0,
+                            ),
+                          ),
+                          helperText: 'Enter tags',
+                          helperStyle: const TextStyle(
+                            color: Colors.teal,
+                          ),
+                          hintText: inputFieldValues.tags.isNotEmpty
+                              ? ''
+                              : "Enter tag",
+                          prefixIconConstraints:
+                              BoxConstraints(maxWidth: _distanceToField * 0.70),
+                          prefixIcon: inputFieldValues.tags.isNotEmpty
+                              ? SingleChildScrollView(
+                                  controller:
+                                      inputFieldValues.tagScrollController,
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: inputFieldValues.tags.map(
+                                      (tag) {
+                                        return Container(
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0),
+                                            ),
+                                            color: Colors.teal,
+                                          ),
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0, vertical: 5.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              InkWell(
+                                                child: Text(
+                                                  '#$tag',
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                onTap: () {
+                                                  //print("$tag selected");
+                                                },
+                                              ),
+                                              const SizedBox(width: 4.0),
+                                              InkWell(
+                                                onTap: () {
+                                                  inputFieldValues
+                                                      .onTagRemoved(tag);
+                                                },
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(3.0),
+                                                  child: Icon(
+                                                    Icons.cancel,
+                                                    size: 14.0,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ).toList(),
+                                  ),
+                                )
+                              : null),
+                    ),
+                  );
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Center(
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          fixedSize: Size(
+                              MediaQuery.of(context).size.width * 0.8, 50)),
+                      onPressed: () async {},
+                      child: const Text(
+                        "Add",
+                        style: TextStyle(color: Colors.white),
+                      )),
+                ),
+              )
             ],
           ),
         ),
