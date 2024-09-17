@@ -47,6 +47,7 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   file_picker: ^8.1.2
   textfield_tags: ^3.0.1
+  status_alert: ^1.0.1
 
 dev_dependencies:
   flutter_test:

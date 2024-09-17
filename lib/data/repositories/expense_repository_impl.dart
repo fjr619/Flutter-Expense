@@ -19,6 +19,7 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   Future<void> createObject(Expense collection) async {
     await isar.writeTxn(() async {
       await isar.expenses.put(collection);
+      await collection.receipts.save();
     });
   }
 

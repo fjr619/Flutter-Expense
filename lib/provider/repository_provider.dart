@@ -2,12 +2,15 @@
 import 'package:flutter_expensetracker/data/repositories/budget_repository_impl.dart';
 import 'package:flutter_expensetracker/data/repositories/expense_repository_impl.dart';
 import 'package:flutter_expensetracker/data/repositories/income_repository_impl.dart';
+import 'package:flutter_expensetracker/data/repositories/receipt_repository_impl.dart';
 import 'package:flutter_expensetracker/domain/models/budget.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/domain/models/income.dart';
+import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/domain/repositories/budget_repository.dart';
 import 'package:flutter_expensetracker/domain/repositories/expense_repository.dart';
 import 'package:flutter_expensetracker/domain/repositories/income_repository.dart';
+import 'package:flutter_expensetracker/domain/repositories/receipt_repository.dart';
 import 'package:flutter_expensetracker/provider/isar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
@@ -27,7 +30,7 @@ final incomeRepositoryProvider = Provider<IncomeRepository<Income>>((ref) {
   return IncomeRepositoryImpl(isar);
 });
 
-// final receiptRepositoryProvider = FutureProvider<ReceiptRepository>((ref) async {
-//   final DatabaseService databaseService = await ref.watch(isarProvider.future);
-//   return ReceiptRepositoryImpl(databaseService.isar);
-// });
+final receiptRepositoryProvider = Provider<ReceiptRepository<Receipt>>((ref) {
+  final Isar isar = ref.watch(isarProvider);
+  return ReceiptRepositoryImpl(isar);
+});

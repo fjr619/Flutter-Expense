@@ -20,7 +20,7 @@ class HomeViewmodel extends StateNotifier<HomeState> {
     required this.expenseRepository,
   }) : super(HomeState()) {
     getBudget();
-    getExpenseTotal();
+    // getExpenseTotal();
   }
 
   @override
@@ -57,8 +57,9 @@ class HomeViewmodel extends StateNotifier<HomeState> {
   void getTodayExpense() {
     _todayExpenseSubscription?.cancel();
     _todayExpenseSubscription = expenseRepository.getObjectsByToday().listen(
-      (expenses) {
-        // state = state.copyWith(expenses: expenses);
+      (expenses) async {
+        await getExpenseTotal();
+        state = state.copyWith(expenses: expenses);
       },
     );
   }

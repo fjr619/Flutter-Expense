@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class ExpenseState {
   final double amount;
   final bool doValidationAmount;
@@ -10,6 +12,7 @@ class ExpenseState {
   final String subCat;
   final bool doValidationSubCat;
   final List<Map<String, dynamic>> receiptDatas;
+  final List<String>? tags;
 
   ExpenseState({
     this.amount = 0,
@@ -20,27 +23,32 @@ class ExpenseState {
     this.subCat = "",
     this.doValidationSubCat = false,
     List<Map<String, dynamic>>? receiptDatas,
+    this.tags,
   })  : selectedDate = selectedDate ?? DateTime.now(),
         receiptDatas = receiptDatas ?? [];
 
-  ExpenseState copyWith(
-      {double? amount,
-      bool? doValidationAmount,
-      DateTime? selectedDate,
-      int? selectedCategoryIndex,
-      String? selectedPayment,
-      String? subCat,
-      bool? doValidationSubCat,
-      List<Map<String, dynamic>>? receiptDatas}) {
+  ExpenseState copyWith({
+    double? amount,
+    bool? doValidationAmount,
+    DateTime? selectedDate,
+    int? selectedCategoryIndex,
+    String? selectedPayment,
+    String? subCat,
+    bool? doValidationSubCat,
+    List<Map<String, dynamic>>? receiptDatas,
+    List<String>? tags,
+  }) {
     return ExpenseState(
-        amount: amount ?? this.amount,
-        doValidationAmount: doValidationAmount ?? this.doValidationAmount,
-        selectedDate: selectedDate ?? this.selectedDate,
-        selectedCategoryIndex:
-            selectedCategoryIndex ?? this.selectedCategoryIndex,
-        selectedPayment: selectedPayment,
-        subCat: subCat ?? this.subCat,
-        doValidationSubCat: doValidationSubCat ?? this.doValidationSubCat,
-        receiptDatas: receiptDatas ?? this.receiptDatas);
+      amount: amount ?? this.amount,
+      doValidationAmount: doValidationAmount ?? this.doValidationAmount,
+      selectedDate: selectedDate ?? this.selectedDate,
+      selectedCategoryIndex:
+          selectedCategoryIndex ?? this.selectedCategoryIndex,
+      selectedPayment: selectedPayment ?? this.selectedPayment,
+      subCat: subCat ?? this.subCat,
+      doValidationSubCat: doValidationSubCat ?? this.doValidationSubCat,
+      receiptDatas: receiptDatas ?? this.receiptDatas,
+      tags: tags ?? this.tags,
+    );
   }
 }

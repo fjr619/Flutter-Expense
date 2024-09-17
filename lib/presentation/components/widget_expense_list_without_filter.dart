@@ -30,6 +30,13 @@ class WidgetExpenseListWithoutFilter extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+                  subtitle: Text(
+                    expense.subCategory!.name!,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   trailing: Text(
                     '${expense.amount}',
                     style: const TextStyle(

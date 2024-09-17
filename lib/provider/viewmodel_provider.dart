@@ -1,7 +1,9 @@
 import 'package:flutter_expensetracker/domain/models/budget.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
+import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/domain/repositories/budget_repository.dart';
 import 'package:flutter_expensetracker/domain/repositories/expense_repository.dart';
+import 'package:flutter_expensetracker/domain/repositories/receipt_repository.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_state.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_state.dart';
@@ -15,6 +17,7 @@ final homeViewmodelProvider = StateNotifierProvider<HomeViewmodel, HomeState>(
         ref.watch(budgetRepositoryProvider);
     final ExpenseRepository<Expense> expenseRepository =
         ref.watch(expenseRepositoryProvider);
+
     return HomeViewmodel(
       budgetRepository: budgetRepository,
       expenseRepository: expenseRepository,
@@ -23,5 +26,13 @@ final homeViewmodelProvider = StateNotifierProvider<HomeViewmodel, HomeState>(
 );
 
 final expenseViewmodelProvider =
-    StateNotifierProvider<ExpenseViewmodel, ExpenseState>(
-        (ref) => ExpenseViewmodel());
+    StateNotifierProvider<ExpenseViewmodel, ExpenseState>((ref) {
+  final ReceiptRepository<Receipt> receiptRepository =
+      ref.watch(receiptRepositoryProvider);
+  final ExpenseRepository<Expense> expenseRepository =
+      ref.watch(expenseRepositoryProvider);
+  return ExpenseViewmodel(
+    receiptRepository: receiptRepository,
+    expenseRepository: expenseRepository,
+  );
+});

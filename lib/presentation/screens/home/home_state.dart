@@ -36,7 +36,7 @@ class HomeState {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
       totalValue: totalValue ?? this.totalValue,
-      budget: budget,
+      budget: budget ?? this.budget,
       expenses: expenses ?? this.expenses,
     );
   }
