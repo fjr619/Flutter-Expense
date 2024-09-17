@@ -58,31 +58,25 @@ class ExpenseViewmodel extends StateNotifier<ExpenseState> {
     FilePickerResult result,
     DateTime selectedDate,
     TextEditingController fileTextController,
+    Function() onFinishUpload,
   ) async {
     File file = File(result.files.single.path!);
-    String appPath = await getPath();
 
-    List<String> nameAndExtension = result.files.single.name.split(".");
-    final reversed = nameAndExtension.reversed.toList();
+    Uint8List imageBytes = result.files.first.bytes ?? await file.readAsBytes();
+
+    String? fileExtension = result.files.first.extension;
 
     final filename =
-        "${fileTextController.text}_${DateFormat("d_MM_yyy").format(selectedDate)}.${reversed[0]}";
-
-    fileTextController.clear();
-
-    log('filename $filename');
-
-    File newFile = await file.copy('$appPath/$filename');
-    Uint8List imageBytes = await newFile.readAsBytes();
-    // files.add(imageBytes);
+        "${fileTextController.text}_${DateFormat("d_MM_yyy").format(selectedDate)}.$fileExtension";
 
     final receipt = Receipt()..name = filename;
-    // receipts.add(receipt);
 
     state = state.copyWith(
         receiptDatas: List.from(state.receiptDatas)
           ..add({'receipt': receipt, 'image': imageBytes}));
 
-    // show = false;
+    fileTextController.clear();
+
+    onFinishUpload();
   }
 }

@@ -1,14 +1,8 @@
-import 'dart:developer';
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_expensetracker/domain/models/income.dart';
-import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_category_item.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_empty.dart';
-import 'package:flutter_expensetracker/presentation/components/widget_header.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_title.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_state.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_viewmodel.dart';
@@ -33,37 +27,35 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
   final ScrollController _scrollController = ScrollController();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountTextController = TextEditingController();
-  final FocusNode _amountTextFocusNode = FocusNode();
   final TextEditingController _subCatTextController = TextEditingController();
-  final FocusNode _subCatTextFocusNode = FocusNode();
   final TextEditingController _fileTextController = TextEditingController();
+  final TextEditingController _descTextController = TextEditingController();
   late final ExpenseViewmodel expenseViewmodel =
       ref.read(expenseViewmodelProvider.notifier);
 
   @override
   void dispose() {
-    _amountTextFocusNode.dispose();
     _amountTextController.dispose();
-    _subCatTextFocusNode.dispose();
     _subCatTextController.dispose();
     _scrollController.dispose();
-
+    _descTextController.dispose();
     super.dispose();
   }
 
   void clearForm() {
     _formKey.currentState?.reset();
-
     expenseViewmodel.reinitialize();
 
     _amountTextController.clear();
-    _amountTextFocusNode.unfocus();
-
     _subCatTextController.clear();
-    _subCatTextFocusNode.unfocus();
+    _fileTextController.clear();
+    _descTextController.clear();
+
+    FocusScope.of(context).unfocus();
 
     if (_scrollController.hasClients) {
-      _scrollController.jumpTo(0);
+      _scrollController.animateTo(0,
+          duration: const Duration(milliseconds: 200), curve: Easing.linear);
     }
   }
 
@@ -84,44 +76,13 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
     return null;
   }
 
-  //todo bisa dipindah ke viewmodel?
-  // Set<Receipt> receipts = {};
-  bool show = false;
-  // List<Uint8List> files = [];
-  // List<Map<String, dynamic>> test = [];
-  // void uploadFile(FilePickerResult result, DateTime selectedDate) async {
-  //   File file = File(result.files.single.path!);
-  //   String appPath = await getPath();
-
-  //   List<String> nameAndExtension = result.files.single.name.split(".");
-  //   final reversed = nameAndExtension.reversed.toList();
-
-  //   final filename =
-  //       "${_fileTextController.text}_${DateFormat("d_MM_yyy").format(selectedDate)}.${reversed[0]}";
-
-  //   _fileTextController.clear();
-
-  //   log('filename $filename');
-
-  //   File newFile = await file.copy('$appPath/$filename');
-  //   Uint8List imageBytes = await newFile.readAsBytes();
-  //   // files.add(imageBytes);
-
-  //   final receipt = Receipt()..name = filename;
-  //   // receipts.add(receipt);
-
-  //   test.add({'receipt': receipt, 'image': imageBytes});
-
-  //   show = false;
-  //   setState(() {});
-  // }
+  bool showLoadingReceipt = false;
 
   Widget _textFormAmount(ExpenseState expenseState) {
     return TextFormField(
       autovalidateMode: expenseState.doValidationAmount
           ? AutovalidateMode.onUserInteraction
           : AutovalidateMode.disabled,
-      focusNode: _amountTextFocusNode,
       controller: _amountTextController,
       style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       textAlign: TextAlign.end,
@@ -216,7 +177,6 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
   Widget _textFormSubCat(ExpenseState expenseState) {
     return TextFormField(
       controller: _subCatTextController,
-      focusNode: _subCatTextFocusNode,
       autovalidateMode: expenseState.doValidationSubCat
           ? AutovalidateMode.onUserInteraction
           : AutovalidateMode.disabled,
@@ -253,6 +213,135 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
     );
   }
 
+  Widget _receiptImage(BuildContext context, ExpenseState expenseState) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const WidgetTitle(title: "Add receipt", clr: Colors.black),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: IconButton(
+                  onPressed: () async {
+                    FocusScope.of(context).unfocus();
+                    FilePickerResult? result =
+                        await FilePicker.platform.pickFiles(
+                      withReadStream: true,
+                    );
+                    if (result != null) {
+                      setState(() {
+                        showLoadingReceipt = true;
+                      });
+                      if (context.mounted) {
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text(
+                                'Enter file name',
+                                style:
+                                    TextStyle(color: Colors.teal, fontSize: 14),
+                              ),
+                              content: TextField(
+                                controller: _fileTextController,
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _fileTextController.clear();
+                                      showLoadingReceipt = false;
+                                      context.pop();
+                                    });
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.pop();
+                                    expenseViewmodel.uploadFile(
+                                      result,
+                                      expenseState.selectedDate,
+                                      _fileTextController,
+                                      () {
+                                        setState(() {
+                                          showLoadingReceipt = false;
+                                        });
+                                      },
+                                    );
+                                  },
+                                  style: const ButtonStyle(
+                                      elevation: WidgetStatePropertyAll(0),
+                                      backgroundColor:
+                                          WidgetStatePropertyAll(Colors.teal),
+                                      foregroundColor:
+                                          WidgetStatePropertyAll(Colors.white)),
+                                  child: const Text('Save'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    }
+                  },
+                  icon: const Icon(Icons.add)),
+            )
+          ],
+        ),
+        if (showLoadingReceipt) ...{
+          Visibility(
+            visible: showLoadingReceipt,
+            child: const SizedBox(
+              width: double.infinity,
+              height: 100,
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.teal,
+                ),
+              ),
+            ),
+          ),
+        } else if (expenseState.receiptDatas.isEmpty) ...{
+          const SizedBox(
+            width: double.infinity,
+            height: 100,
+            child: WidgetEmpty(
+              subtitle: 'Empty Receipt',
+            ),
+          ),
+        } else ...{
+          GridView.builder(
+            shrinkWrap: true,
+            itemCount: expenseState.receiptDatas.length,
+            padding: const EdgeInsets.all(0),
+            itemBuilder: (BuildContext context, int index) {
+              final dataMap = expenseState.receiptDatas[index];
+              final image = dataMap['image'];
+              return InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  splashColor: Colors.teal.shade100,
+                  onTap: () {},
+                  child: Ink(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Ink.image(
+                        image: MemoryImage(image),
+                      )));
+            },
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, mainAxisSpacing: 4.0),
+          ),
+        },
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final expenseState = ref.watch(expenseViewmodelProvider);
@@ -271,6 +360,7 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
         child: Form(
           key: _formKey,
           child: ListView(
+            controller: _scrollController,
             children: [
               _textFormAmount(expenseState),
               _datePicker(expenseState),
@@ -283,102 +373,10 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
               const WidgetTitle(
                   title: "Select payment method", clr: Colors.black),
               _paymentSelection(expenseState),
-              ListTile(
-                title:
-                    const WidgetTitle(title: "Add receipt", clr: Colors.black),
-                trailing: IconButton(
-                    onPressed: () async {
-                      FocusScope.of(context).unfocus();
-                      FilePickerResult? result =
-                          await FilePicker.platform.pickFiles();
-                      if (result != null) {
-                        if (context.mounted) {
-                          showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text(
-                                  'Enter file name',
-                                  style: TextStyle(
-                                      color: Colors.teal, fontSize: 14),
-                                ),
-                                content: TextField(
-                                  controller: _fileTextController,
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      context.pop();
-                                    },
-                                    child: const Text('Cancel'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      context.pop();
-                                      expenseViewmodel.uploadFile(
-                                        result,
-                                        expenseState.selectedDate,
-                                        _fileTextController,
-                                      );
-                                    },
-                                    style: const ButtonStyle(
-                                        elevation: WidgetStatePropertyAll(0),
-                                        backgroundColor:
-                                            WidgetStatePropertyAll(Colors.teal),
-                                        foregroundColor: WidgetStatePropertyAll(
-                                            Colors.white)),
-                                    child: const Text('Save'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                      }
-                    },
-                    icon: const Icon(Icons.add)),
-              ),
-              Visibility(
-                visible: show,
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.teal,
-                  ),
-                ),
-              ),
-              if (expenseState.receiptDatas.isEmpty) ...{
-                const SizedBox(
-                  width: double.infinity,
-                  height: 150,
-                  child: WidgetEmpty(
-                    subtitle: 'Empty Receipt',
-                  ),
-                ),
-              } else ...{
-                GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: expenseState.receiptDatas.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final dataMap = expenseState.receiptDatas[index];
-                    final image = dataMap['image'];
-                    return InkWell(
-                        borderRadius: BorderRadius.circular(12),
-                        splashColor: Colors.teal.shade100,
-                        onTap: () {},
-                        child: Ink(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Ink.image(
-                              image: MemoryImage(image),
-                            )));
-                  },
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, mainAxisSpacing: 4.0),
-                ),
-              }
+              const Gap(10),
+              _receiptImage(context, expenseState),
+              const Gap(10),
+              const WidgetTitle(title: 'Notes', clr: Colors.black),
             ],
           ),
         ),
