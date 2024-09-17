@@ -4,7 +4,7 @@ import 'package:flutter_expensetracker/domain/models/budget.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/domain/models/income.dart';
 import 'package:flutter_expensetracker/domain/models/receipt.dart';
-import 'package:flutter_expensetracker/presentation/navigation/app_navigation.dart';
+import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:flutter_expensetracker/provider/isar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';

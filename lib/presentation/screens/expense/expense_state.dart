@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 class ExpenseState {
   final double amount;
   final bool doValidationAmount;

@@ -333,7 +333,9 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
               return InkWell(
                   borderRadius: BorderRadius.circular(12),
                   splashColor: Colors.teal.shade100,
-                  onTap: () {},
+                  onTap: () {
+                    expenseViewmodel.removeReceipt(index);
+                  },
                   child: Ink(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
@@ -364,12 +366,12 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            controller: _scrollController,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -387,7 +389,7 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
                 const Gap(10),
                 _receiptImage(context, expenseState),
                 const Gap(10),
-                const WidgetTitle(title: 'Notes', clr: Colors.black),
+                const WidgetTitle(title: 'Tags', clr: Colors.black),
                 TextFieldTags(
                   textfieldTagsController: _descTextController,
                   initialTags: const <String>[],
@@ -423,7 +425,6 @@ class _ExpenseScreenState extends ConsumerState<ExpenseScreen> {
                                 width: 1.0,
                               ),
                             ),
-                            helperText: 'Enter tags',
                             helperStyle: const TextStyle(
                               color: Colors.teal,
                             ),

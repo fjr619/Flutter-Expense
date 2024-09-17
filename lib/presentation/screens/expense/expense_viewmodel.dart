@@ -68,6 +68,15 @@ class ExpenseViewmodel extends StateNotifier<ExpenseState> {
     state = state.copyWith(tags: newTags);
   }
 
+  void removeReceipt(int index) {
+    // Create a new list by removing the item at the specified index
+    final updatedReceipts = List<Map<String, dynamic>>.from(state.receiptDatas)
+      ..removeAt(index);
+
+    // Update the state with the new list
+    state = state.copyWith(receiptDatas: updatedReceipts);
+  }
+
   void uploadFile(
     FilePickerResult result,
     DateTime selectedDate,
