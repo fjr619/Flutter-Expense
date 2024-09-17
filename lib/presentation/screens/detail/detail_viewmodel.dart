@@ -14,9 +14,10 @@ class DetailViewmodel extends StateNotifier<DetailState> {
     log('init detail viewmodel');
   }
 
-  void loadExpenseById(String id) async {
+  Future<void> loadExpenseById(String id, Function() finishLoad) async {
     log('do load expense by $id');
     Expense? expense = await expenseRepository.getObjectById(int.parse(id));
     state = state.copyWith(expense: expense);
+    finishLoad();
   }
 }

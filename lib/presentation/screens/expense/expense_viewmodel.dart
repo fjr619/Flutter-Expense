@@ -89,13 +89,15 @@ class ExpenseViewmodel extends StateNotifier<ExpenseState> {
     String fileExtension = result.files.first.extension!;
 
     final filename =
-        "${fileTextController.text}_${DateFormat("d_MM_yyy").format(selectedDate)}.$fileExtension";
+        "${fileTextController.text}_${DateFormat("d_MM_yyy").format(selectedDate)}_${DateFormat("HH_mm_ss").format(DateTime.now())}.$fileExtension";
 
     fileTextController.clear();
 
     File newFile = await file.copy('$appPath/$filename');
 
     Uint8List imageBytes = await newFile.readAsBytes();
+
+    log('path $appPath/$filename');
 
     final receipt = Receipt()..name = filename;
 
