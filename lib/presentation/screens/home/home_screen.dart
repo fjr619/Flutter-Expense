@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_date.dart';
-import 'package:flutter_expensetracker/presentation/components/widget_expense_list.dart';
+import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_screen.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_header.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_title.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
@@ -53,7 +53,7 @@ class HomeScreen extends ConsumerWidget {
                 day: DateFormat.EEEE().format(DateTime.now())),
             const Padding(
               padding: EdgeInsets.only(top: 8),
-              child: WidgetExpenseList(
+              child: ExpenseListScreen(
                 filter: false,
                 all: false,
               ),

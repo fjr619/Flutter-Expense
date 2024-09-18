@@ -13,22 +13,19 @@ class HomeViewmodel extends StateNotifier<HomeState> {
   final ExpenseRepository<Expense> expenseRepository;
 
   StreamSubscription<Budget?>? _budgetSubscription;
-  StreamSubscription<List<Expense>>? _allExpenseSubscription;
-  StreamSubscription<List<Expense>>? _todayExpenseSubscription;
+  StreamSubscription<double>? _totalExpenseSubscription;
 
   HomeViewmodel({
     required this.budgetRepository,
     required this.expenseRepository,
   }) : super(HomeState()) {
     getBudget();
-    // getExpenseTotal();
   }
 
   @override
   void dispose() {
     _budgetSubscription?.cancel();
-    _allExpenseSubscription?.cancel();
-    _todayExpenseSubscription?.cancel();
+    _totalExpenseSubscription?.cancel();
     super.dispose();
   }
 
@@ -44,32 +41,13 @@ class HomeViewmodel extends StateNotifier<HomeState> {
         state = state.copyWith(budget: budget);
       },
     );
-  }
 
-  //TODO pindahin ke viewmodel lain
-  void getAllExpense() {
-    _allExpenseSubscription?.cancel();
-    _allExpenseSubscription = expenseRepository.getAllObjects().listen(
-      (expenses) {
-        state = state.copyWith(expensesAll: expenses);
+    _totalExpenseSubscription?.cancel();
+    _totalExpenseSubscription = expenseRepository.totalExpenses().listen(
+      (total) {
+        state = state.copyWith(totalValue: total);
       },
     );
-  }
-
-  //TODO pindahin ke viewmodel lain
-  void getTodayExpense() {
-    _todayExpenseSubscription?.cancel();
-    _todayExpenseSubscription = expenseRepository.getObjectsByToday().listen(
-      (expenses) async {
-        await getExpenseTotal();
-        state = state.copyWith(expensesToday: expenses);
-      },
-    );
-  }
-
-  Future<void> getExpenseTotal() async {
-    final expense = await expenseRepository.totalExpenses();
-    state = state.copyWith(totalValue: expense);
   }
 
   Future<void> submitBudget(double amount) async {

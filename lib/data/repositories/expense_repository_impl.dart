@@ -68,7 +68,9 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   @override
   Stream<List<Expense>> getObjectsByToday() {
     return isar.expenses
-        .where()
+        .where(sort: Sort.desc)
+        .anyId()
+        .filter()
         .dateEqualTo(DateTime.now().copyWith(
             hour: 0, minute: 0, second: 0, microsecond: 0, millisecond: 0))
         .watch(fireImmediately: true);
@@ -261,8 +263,17 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<double> totalExpenses() async {
-    return await isar.expenses.where().amountProperty().sum();
+  Stream<double> totalExpenses() {
+    return isar.expenses
+        .where()
+        .amountProperty()
+        .watchLazy(
+            fireImmediately:
+                true) // Lazily watch for changes but don't re-run the query
+        .asyncMap((_) => isar.expenses
+            .where()
+            .amountProperty()
+            .sum()); // Re-run query manually when changes are detected
   }
 
   @override

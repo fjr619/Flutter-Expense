@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:flutter_expensetracker/util/util.dart';
+import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 
 class WidgetExpenseListWithoutFilter extends StatelessWidget {
@@ -52,11 +53,12 @@ class WidgetExpenseListWithoutFilter extends StatelessWidget {
                               color: Colors.teal,
                             ),
                           ),
+                          const Gap(5),
                           Text(
                             DateFormat(DateFormat.YEAR_MONTH_DAY)
                                 .format(expense.date),
                             style: const TextStyle(
-                              fontSize: 13,
+                              fontSize: 10,
                               color: Colors.black,
                             ),
                           )

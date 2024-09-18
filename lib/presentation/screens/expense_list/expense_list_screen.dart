@@ -6,12 +6,12 @@ import 'package:flutter_expensetracker/presentation/components/widget_expense_li
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class WidgetExpenseList extends ConsumerStatefulWidget {
+class ExpenseListScreen extends ConsumerStatefulWidget {
   final bool filter;
   final bool all;
   final bool canScroll;
 
-  const WidgetExpenseList({
+  const ExpenseListScreen({
     super.key,
     required this.filter,
     required this.all,
@@ -19,21 +19,20 @@ class WidgetExpenseList extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<WidgetExpenseList> createState() => _WidgetExpenseListState();
+  ConsumerState<ExpenseListScreen> createState() => _WidgetExpenseListState();
 }
 
-class _WidgetExpenseListState extends ConsumerState<WidgetExpenseList> {
+class _WidgetExpenseListState extends ConsumerState<ExpenseListScreen> {
   @override
   void initState() {
     super.initState();
-    //TODO pindahin ke viewmodel lain
-    final homeViewModel = ref.read(homeViewmodelProvider.notifier);
+    final exepsneListVM = ref.read(expenseListViewmodelProvider.notifier);
 
     if (!widget.filter) {
       if (widget.all) {
-        homeViewModel.getAllExpense();
+        exepsneListVM.getAllExpense();
       } else {
-        homeViewModel.getTodayExpense();
+        exepsneListVM.getTodayExpense();
       }
     }
   }
@@ -44,24 +43,19 @@ class _WidgetExpenseListState extends ConsumerState<WidgetExpenseList> {
       return const WidgetExpenseListWithFilter();
     }
 
-    final homeState = ref.watch(homeViewmodelProvider);
+    final expenseListViewmodel = ref.watch(expenseListViewmodelProvider);
 
-    if (widget.all) {
-      if (homeState.expensesAll.isEmpty) {
-        return const WidgetEmpty(
-          subtitle: 'No expenses available yet',
-        );
-      }
-    } else {
-      if (homeState.expensesToday.isEmpty) {
-        return const WidgetEmpty(
-          subtitle: 'No expenses available yet',
-        );
-      }
+    if ((widget.all && expenseListViewmodel.expensesAll.isEmpty) ||
+        (!widget.all && expenseListViewmodel.expensesToday.isEmpty)) {
+      return const WidgetEmpty(
+        subtitle: 'No expenses available yet',
+      );
     }
 
     return WidgetExpenseListWithoutFilter(
-      expenses: widget.all ? homeState.expensesAll : homeState.expensesToday,
+      expenses: widget.all
+          ? expenseListViewmodel.expensesAll
+          : expenseListViewmodel.expensesToday,
       canScroll: widget.canScroll,
     );
   }

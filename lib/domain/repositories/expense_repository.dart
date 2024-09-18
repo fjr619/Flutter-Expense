@@ -26,7 +26,7 @@ abstract class ExpenseRepository<T> extends Repository<T> {
   Future<int> getTotalObjects();
   Future<void> clearData();
   Future<List<String?>> getPaymentProperty();
-  Future<double> totalExpenses();
+  Stream<double> totalExpenses();
   Future<double> totalExpensesByCategory();
   Future<List<Expense>> fullTextSearch(String searchText);
 }

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_expensetracker/presentation/components/widget_expense_list.dart';
+import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_screen.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -64,7 +64,7 @@ class _ExpenseLogScreenState extends ConsumerState<ExpenseLogScreen> {
           const Expanded(
               child: Padding(
             padding: EdgeInsets.only(top: 5),
-            child: WidgetExpenseList(
+            child: ExpenseListScreen(
               filter: false,
               all: true,
               canScroll: true,
