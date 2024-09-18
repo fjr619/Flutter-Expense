@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_expensetracker/domain/models/budget.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
@@ -41,6 +42,7 @@ class HomeViewmodel extends StateNotifier<HomeState> {
         budgetRepository.getObjectByDate(month: month, year: year).listen(
       (budget) {
         state = state.copyWith(budget: budget);
+        log('budget ${state.budget?.amount}');
       },
     );
   }

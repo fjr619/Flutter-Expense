@@ -44,7 +44,6 @@ class HomeScreen extends ConsumerWidget {
               percent: homeState.percent,
               totalValue: homeState.totalValue,
               budgetValue: homeState.budgetValue,
-              hasBudget: (homeState.budget != null) ? true : false,
               submitBudget: (amount) {
                 submitBudget(ref, amount);
               },

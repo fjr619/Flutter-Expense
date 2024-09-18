@@ -11,6 +11,8 @@ import 'package:flutter_expensetracker/presentation/screens/expense/expense_stat
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_state.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_viewmodel.dart';
+import 'package:flutter_expensetracker/presentation/screens/stats/general/general_state.dart';
+import 'package:flutter_expensetracker/presentation/screens/stats/general/general_viewmodel.dart';
 import 'package:flutter_expensetracker/provider/repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -46,5 +48,18 @@ final detailViewModelProvider =
     final ExpenseRepository<Expense> expenseRepository =
         ref.watch(expenseRepositoryProvider);
     return DetailViewmodel(expenseRepository: expenseRepository);
+  },
+);
+
+final generalViewModelProvider =
+    StateNotifierProvider<GeneralViewmodel, GeneralState>(
+  (ref) {
+    final BudgetRepository<Budget> budgetRepository =
+        ref.watch(budgetRepositoryProvider);
+    final ExpenseRepository<Expense> expenseRepository =
+        ref.watch(expenseRepositoryProvider);
+    return GeneralViewmodel(
+        expenseRepository: expenseRepository,
+        budgetRepository: budgetRepository);
   },
 );

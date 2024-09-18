@@ -8,8 +8,8 @@ class WidgetHeader extends StatelessWidget {
   final double percent;
   final double totalValue;
   final double budgetValue;
-  final bool hasBudget;
-  final Function(double amount) submitBudget;
+  final bool canEdit;
+  final Function(double amount)? submitBudget;
 
   final TextEditingController budgetController = TextEditingController();
 
@@ -18,8 +18,8 @@ class WidgetHeader extends StatelessWidget {
     required this.percent,
     required this.totalValue,
     required this.budgetValue,
-    required this.hasBudget,
-    required this.submitBudget,
+    this.canEdit = true,
+    this.submitBudget,
   });
 
   void showDialogBudget(BuildContext context) {
@@ -54,7 +54,7 @@ class WidgetHeader extends StatelessWidget {
             TextButton(
               onPressed: () {
                 context.pop();
-                submitBudget(double.parse(budgetController.text));
+                submitBudget?.call(double.parse(budgetController.text));
               },
               child: const Text('Submit'),
             ),
@@ -124,20 +124,22 @@ class WidgetHeader extends StatelessWidget {
                 ),
               ),
             ),
-            OutlinedButton(
-              style: ButtonStyle(
-                  side: WidgetStateProperty.resolveWith<BorderSide>(
-                (states) => const BorderSide(color: Colors.teal),
-              )),
-              onPressed: () {
-                showDialogBudget(context);
-              },
-              child: Text(
-                (hasBudget) ? 'Edit Budget' : 'Create Budget',
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.teal),
-              ),
-            )
+            Visibility(
+                visible: canEdit,
+                child: OutlinedButton(
+                  style: ButtonStyle(
+                      side: WidgetStateProperty.resolveWith<BorderSide>(
+                    (states) => const BorderSide(color: Colors.teal),
+                  )),
+                  onPressed: () {
+                    showDialogBudget(context);
+                  },
+                  child: Text(
+                    (budgetValue > 0.0) ? 'Edit Budget' : 'Create Budget',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.teal),
+                  ),
+                )),
           ],
         ),
       ),
