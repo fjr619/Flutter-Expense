@@ -48,6 +48,7 @@ dependencies:
   file_picker: ^8.1.2
   textfield_tags: ^3.0.1
   status_alert: ^1.0.1
+  photo_view: ^0.15.0
 
 dev_dependencies:
   flutter_test:

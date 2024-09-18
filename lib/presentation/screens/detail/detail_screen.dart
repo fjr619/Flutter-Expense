@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_divier.dart';
+import 'package:flutter_expensetracker/presentation/components/widget_image_item.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_title.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_expensetracker/util/util.dart';
@@ -11,6 +12,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 class DetailScreen extends ConsumerStatefulWidget {
   final String expenseId;
@@ -122,55 +125,99 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                           const WidgetDivier(),
                           const WidgetTitle(
                               title: 'Receipts', clr: Colors.black),
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: detailState.expense!.receipts.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3, mainAxisSpacing: 4.0),
-                            itemBuilder: (context, index) {
-                              // Get the file path
-                              String filePath =
-                                  '$_path/${detailState.expense!.receipts.elementAt(index).name}';
-                              File file = File(filePath);
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: detailState.expense!.receipts.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      mainAxisSpacing: 4.0,
+                                      crossAxisSpacing: 4),
+                              itemBuilder: (context, index) {
+                                // Get the file path
+                                String filePath =
+                                    '$_path/${detailState.expense!.receipts.elementAt(index).name}';
+                                File file = File(filePath);
 
-                              return FutureBuilder<bool>(
-                                future: file.exists(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.done) {
-                                    if (snapshot.hasData && snapshot.data!) {
-                                      // If file exists, show the image
-                                      return Image.file(
-                                        file,
-                                        width: 50,
-                                      );
+                                return FutureBuilder<bool>(
+                                  future: file.exists(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.done) {
+                                      if (snapshot.hasData && snapshot.data!) {
+                                        return WidgetImageItem(
+                                          file: file,
+                                          onclickItem: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return Dialog(
+                                                  child: PhotoView(
+                                                      imageProvider:
+                                                          FileImage(file)),
+                                                );
+                                              },
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        return Container(
+                                          width: 50,
+                                          height: 50,
+                                          color: Colors.grey[300],
+                                          child: const Icon(Icons.broken_image),
+                                        );
+                                      }
                                     } else {
-                                      // If file does not exist, show a placeholder or a message
                                       return Container(
                                         width: 50,
                                         height: 50,
-                                        color: Colors.grey[
-                                            300], // Placeholder background
-                                        child: const Icon(Icons
-                                            .broken_image), // Placeholder icon
+                                        color: Colors.grey[300],
+                                        child:
+                                            const CircularProgressIndicator(),
                                       );
                                     }
-                                  } else {
-                                    // While checking if the file exists, show a loading indicator
-                                    return Container(
-                                      width: 50,
-                                      height: 50,
-                                      color: Colors
-                                          .grey[300], // Placeholder background
-                                      child: const CircularProgressIndicator(),
-                                    );
-                                  }
-                                },
-                              );
-                            },
+                                  },
+                                );
+                              },
+                            ),
                           ),
+                          const WidgetDivier(),
+                          const WidgetTitle(
+                              title: 'Payment Method', clr: Colors.black),
+                          Text(detailState.expense!.paymentMethod.toString()),
+                          const WidgetDivier(),
+                          const WidgetTitle(title: 'Tags', clr: Colors.black),
+                          detailState.expense!.description != null
+                              ? Wrap(
+                                  runSpacing: 5,
+                                  children:
+                                      detailState.expense!.description!.map(
+                                    (tag) {
+                                      return Container(
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          color: Colors.teal,
+                                        ),
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 5.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 5.0),
+                                        child: Text(
+                                          '#$tag',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      );
+                                    },
+                                  ).toList(),
+                                )
+                              : Container(),
                         ],
                       ),
                     ),
