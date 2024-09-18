@@ -155,9 +155,56 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                                               context: context,
                                               builder: (context) {
                                                 return Dialog(
-                                                  child: PhotoView(
-                                                      imageProvider:
-                                                          FileImage(file)),
+                                                  insetPadding:
+                                                      const EdgeInsets.all(10),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: LayoutBuilder(
+                                                    builder:
+                                                        (context, constraints) {
+                                                      // Constraints give us access to the dialog's width and height
+                                                      double dialogWidth =
+                                                          constraints.maxWidth;
+
+                                                      return Stack(
+                                                        children: [
+                                                          // PhotoView displaying the image
+                                                          PhotoView(
+                                                            imageProvider:
+                                                                FileImage(file),
+                                                          ),
+                                                          // Positioned Close Button relative to the width of the dialog
+                                                          Positioned(
+                                                            top: 10,
+                                                            right: dialogWidth *
+                                                                0.02, // Calculate position based on the dialog width
+                                                            child: IconButton(
+                                                              icon: const Icon(
+                                                                Icons
+                                                                    .cancel_rounded, // X icon
+                                                                size: 32,
+                                                                color: Colors
+                                                                    .teal, // White icon color
+                                                              ),
+                                                              onPressed: () {
+                                                                context
+                                                                    .pop(); // Close the dialog or perform the action
+                                                              },
+                                                              splashColor: Colors
+                                                                  .white
+                                                                  .withOpacity(
+                                                                      0.3), // Optional ripple color
+                                                              splashRadius:
+                                                                  24, // Ripple size
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
                                                 );
                                               },
                                             );
