@@ -1,8 +1,6 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_divier.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_image_item.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_title.dart';
@@ -13,7 +11,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 
 class DetailScreen extends ConsumerStatefulWidget {
   final String expenseId;
@@ -122,6 +119,12 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                               )
                             ],
                           ),
+                          const WidgetDivier(),
+                          const WidgetTitle(
+                              title: 'Sub Category', clr: Colors.black),
+                          Text(detailState.expense!.subCategory?.name
+                                  .toString() ??
+                              ''),
                           const WidgetDivier(),
                           const WidgetTitle(
                               title: 'Receipts', clr: Colors.black),
@@ -238,6 +241,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                           Text(detailState.expense!.paymentMethod.toString()),
                           const WidgetDivier(),
                           const WidgetTitle(title: 'Tags', clr: Colors.black),
+                          const Gap(5),
                           detailState.expense!.description != null
                               ? Wrap(
                                   runSpacing: 5,

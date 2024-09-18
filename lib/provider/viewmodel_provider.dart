@@ -4,7 +4,6 @@ import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/domain/repositories/budget_repository.dart';
 import 'package:flutter_expensetracker/domain/repositories/expense_repository.dart';
 import 'package:flutter_expensetracker/domain/repositories/receipt_repository.dart';
-import 'package:flutter_expensetracker/presentation/screens/detail/detail_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/detail/detail_state.dart';
 import 'package:flutter_expensetracker/presentation/screens/detail/detail_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_state.dart';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_empty.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_title.dart';
 import 'package:flutter_expensetracker/util/util.dart';
+import 'package:gap/gap.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class WidgetCategoryStats extends StatelessWidget {
@@ -15,7 +16,7 @@ class WidgetCategoryStats extends StatelessWidget {
     return Column(
       children: [
         const WidgetTitle(title: 'Expenses / Category', clr: Colors.teal),
-        // Conditional rendering based on budget value
+        const Gap(10),
         if (budgetValue > 0 && categoriesSum.isNotEmpty) ...[
           for (int i = 0; i < categories.length; i++)
             LinearPercentIndicator(

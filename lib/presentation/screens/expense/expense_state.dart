@@ -49,4 +49,17 @@ class ExpenseState {
       tags: tags ?? this.tags,
     );
   }
+
+  factory ExpenseState.reset() {
+    return ExpenseState(
+        amount: 0,
+        selectedDate: DateTime.now(),
+        selectedCategoryIndex: 0,
+        doValidationAmount: false,
+        selectedPayment: null,
+        subCat: '',
+        doValidationSubCat: false,
+        receiptDatas: [],
+        tags: []);
+  }
 }

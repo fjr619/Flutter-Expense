@@ -71,12 +71,17 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<double> getSumForCategory(CategoryEnum value) async {
-    return await isar.expenses
+  Stream<double> getSumForCategory(CategoryEnum value) {
+    return isar.expenses
         .filter()
         .categoryEqualTo(value)
         .amountProperty()
-        .sum();
+        .watchLazy(fireImmediately: true)
+        .asyncMap((_) => isar.expenses
+            .filter()
+            .categoryEqualTo(value)
+            .amountProperty()
+            .sum());
   }
 
   @override

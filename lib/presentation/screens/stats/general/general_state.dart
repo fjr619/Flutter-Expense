@@ -1,4 +1,3 @@
-import 'package:flutter_expensetracker/domain/models/expense.dart';
 
 class GeneralState {
   final double budgetValue;

@@ -1,10 +1,7 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/expense_log_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/general/general_stats_screen.dart';
-import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class StatsScreen extends StatefulWidget {

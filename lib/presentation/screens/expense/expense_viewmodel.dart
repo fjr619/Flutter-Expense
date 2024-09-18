@@ -23,16 +23,7 @@ class ExpenseViewmodel extends StateNotifier<ExpenseState> {
   }) : super(ExpenseState());
 
   void reinitialize() {
-    state = state.copyWith(
-        amount: 0,
-        selectedDate: DateTime.now(),
-        selectedCategoryIndex: 0,
-        doValidationAmount: false,
-        selectedPayment: null,
-        subCat: null,
-        doValidationSubCat: false,
-        receiptDatas: [],
-        tags: []);
+    state = ExpenseState.reset();
   }
 
   void updateSelectedDate(DateTime newDate) {
