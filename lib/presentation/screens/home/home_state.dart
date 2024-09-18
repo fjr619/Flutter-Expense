@@ -6,7 +6,8 @@ class HomeState {
   final bool isLoading;
   final double totalValue;
   final Budget? budget;
-  final List<Expense> expenses;
+  final List<Expense> expensesToday;
+  final List<Expense> expensesAll;
 
   double get budgetValue {
     if (budget == null) {
@@ -23,21 +24,25 @@ class HomeState {
   HomeState({
     this.isLoading = false,
     this.totalValue = 0.0,
-    List<Expense>? expenses,
+    List<Expense>? expensesToday,
+    List<Expense>? expensesAll,
     this.budget,
-  }) : expenses = expenses ?? [];
+  })  : expensesToday = expensesToday ?? [],
+        expensesAll = expensesAll ?? [];
 
   HomeState copyWith({
     bool? isLoading,
     double? totalValue,
     Budget? budget,
-    List<Expense>? expenses,
+    List<Expense>? expensesToday,
+    List<Expense>? expensesAll,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
       totalValue: totalValue ?? this.totalValue,
       budget: budget ?? this.budget,
-      expenses: expenses ?? this.expenses,
+      expensesToday: expensesToday ?? this.expensesToday,
+      expensesAll: expensesAll ?? this.expensesAll,
     );
   }
 }

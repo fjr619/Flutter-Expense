@@ -19,7 +19,6 @@ class GeneralViewmodel extends StateNotifier<GeneralState> {
   GeneralViewmodel(
       {required this.expenseRepository, required this.budgetRepository})
       : super(GeneralState()) {
-    log('init');
     loadData();
   }
 
@@ -51,9 +50,6 @@ class GeneralViewmodel extends StateNotifier<GeneralState> {
       // Extract the category and the sum from the entry
       final category = entry.key;
       final sum = entry.value;
-
-      log('category $category');
-      log('sum $sum');
 
       // Find the index of the category and update the category sum in the list
       final categoryIndex = CategoryEnum.values.indexOf(category);

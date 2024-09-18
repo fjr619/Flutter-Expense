@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_screen.dart';
+import 'package:flutter_expensetracker/presentation/screens/stats/log/expense_log_screen.dart';
+import 'package:flutter_expensetracker/presentation/screens/stats/stats_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -16,16 +20,23 @@ class _MainWrapperState extends State<MainWrapper> {
   int selectedIndex = 0;
 
   void _goBranch(int index) async {
+    final ref = ProviderScope.containerOf(context);
     widget.navigationShell.goBranch(
       index,
       initialLocation: index == widget.navigationShell.currentIndex,
     );
     if (index == 1) {
-      final ref = ProviderScope.containerOf(context);
       // ref.read(expenseViewmodelProvider.notifier).reinitialize();
 
       final settingScreenKey = ref.read(expenseScreenKeyProvider);
       settingScreenKey.currentState?.clearForm();
+    } else if (index == 2) {
+      // final statScreenKey = ref.read(statScreenKeyProvider);
+      // final currentStatIndex = statScreenKey.currentState?.stats;
+      // if (currentStatIndex == 1) {
+      final expenseScreenKey = ref.read(expenseLogScreenKeyProvider);
+      expenseScreenKey.currentState?.loadData();
+      // }
     }
   }
 

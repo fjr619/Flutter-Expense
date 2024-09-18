@@ -51,9 +51,12 @@ class HomeScreen extends ConsumerWidget {
             WidgetExpenseDate(
                 date: DateFormat.d().format(DateTime.now()),
                 day: DateFormat.EEEE().format(DateTime.now())),
-            const WidgetExpenseList(
-              filter: false,
-              all: false,
+            const Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: WidgetExpenseList(
+                filter: false,
+                all: false,
+              ),
             ),
           ],
         ),

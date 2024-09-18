@@ -20,6 +20,7 @@ class WidgetCategoryStats extends StatelessWidget {
         if (budgetValue > 0 && categoriesSum.isNotEmpty) ...[
           for (int i = 0; i < categories.length; i++)
             LinearPercentIndicator(
+              barRadius: const Radius.circular(8),
               animation: true,
               width: 140,
               lineHeight: 7,

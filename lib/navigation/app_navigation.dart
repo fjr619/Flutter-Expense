@@ -72,7 +72,10 @@ class AppNavigation {
               GoRoute(
                 path: "/stats",
                 name: "stats",
-                builder: (context, state) => const StatsScreen(),
+                builder: (context, state) => StatsScreen(
+                  key: ProviderScope.containerOf(context)
+                      .read(statScreenKeyProvider),
+                ),
               ),
             ],
           ),

@@ -1,8 +1,10 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_expensetracker/presentation/screens/stats/expense_log_screen.dart';
+import 'package:flutter_expensetracker/presentation/screens/stats/log/expense_log_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/general/general_stats_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+
+final statScreenKeyProvider = Provider((ref) => GlobalKey<_StatsScreenState>());
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -21,43 +23,44 @@ class _StatsScreenState extends State<StatsScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           surfaceTintColor: Colors.transparent,
-          title: const Text(
-            'Stats',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal),
-          ),
-        ),
-        body: Column(
-          children: [
-            ToggleSwitch(
-              activeBgColor: const [Colors.teal],
-              animate: true,
-              animationDuration: 200,
-              inactiveBgColor: Colors.grey.shade300,
-              initialLabelIndex: stats,
-              cornerRadius: 30,
-              minWidth: MediaQuery.of(context).size.width * 0.4,
-              labels: const ['General', 'Expense log'],
-              totalSwitches: 2,
-              onToggle: (index) {
-                setState(() {
-                  stats = index!;
+          automaticallyImplyLeading: false,
+          flexibleSpace: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Center(
+                child: ToggleSwitch(
+                  activeBgColor: const [Colors.teal],
+                  animate: true,
+                  animationDuration: 200,
+                  inactiveBgColor: Colors.grey.shade200,
+                  initialLabelIndex: stats,
+                  cornerRadius: 30,
+                  minWidth: MediaQuery.of(context).size.width * 0.4,
+                  labels: const ['General', 'Expense log'],
+                  totalSwitches: 2,
+                  onToggle: (index) {
+                    setState(() {
+                      stats = index!;
 
-                  // Lazy initialization for ExpenseLogScreen when needed
-                  if (stats == 1 && expenseLogScreen == null) {
-                    expenseLogScreen = const ExpenseLogScreen();
-                  }
-                });
-              },
-            ),
-            Expanded(
-              child: IndexedStack(
-                index: stats,
-                children: [
-                  const GeneralStatsScreen(),
-                  expenseLogScreen ?? Container(),
-                ],
+                      // Lazy initialization for ExpenseLogScreen when needed
+                      if (stats == 1 && expenseLogScreen == null) {
+                        expenseLogScreen = ExpenseLogScreen(
+                          key: ProviderScope.containerOf(context)
+                              .read(expenseLogScreenKeyProvider),
+                        );
+                      }
+                    });
+                  },
+                ),
               ),
             ),
+          ),
+        ),
+        body: IndexedStack(
+          index: stats,
+          children: [
+            const GeneralStatsScreen(),
+            expenseLogScreen ?? Container(),
           ],
         ));
   }

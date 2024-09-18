@@ -37,7 +37,11 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
 
   @override
   Stream<List<Expense>> getAllObjects() {
-    return isar.expenses.where().watch(fireImmediately: true);
+    return isar.expenses
+        .where(sort: Sort.desc)
+        .anyId()
+        .sortByDateDesc()
+        .watch(fireImmediately: true);
   }
 
   @override

@@ -42,26 +42,27 @@ class HomeViewmodel extends StateNotifier<HomeState> {
         budgetRepository.getObjectByDate(month: month, year: year).listen(
       (budget) {
         state = state.copyWith(budget: budget);
-        log('budget ${state.budget?.amount}');
       },
     );
   }
 
+  //TODO pindahin ke viewmodel lain
   void getAllExpense() {
     _allExpenseSubscription?.cancel();
     _allExpenseSubscription = expenseRepository.getAllObjects().listen(
       (expenses) {
-        // state = state.copyWith(expenses: expenses);
+        state = state.copyWith(expensesAll: expenses);
       },
     );
   }
 
+  //TODO pindahin ke viewmodel lain
   void getTodayExpense() {
     _todayExpenseSubscription?.cancel();
     _todayExpenseSubscription = expenseRepository.getObjectsByToday().listen(
       (expenses) async {
         await getExpenseTotal();
-        state = state.copyWith(expenses: expenses);
+        state = state.copyWith(expensesToday: expenses);
       },
     );
   }

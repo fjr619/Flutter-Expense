@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_category_stats.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_header.dart';
@@ -15,40 +14,34 @@ class GeneralStatsScreen extends ConsumerStatefulWidget {
 class _GeneralStatsScreenState extends ConsumerState<GeneralStatsScreen> {
   late final generalViewModel = ref.read(generalViewModelProvider.notifier);
   late final homeViewmodel = ref.read(homeViewmodelProvider.notifier);
-  final bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final homeState = ref.watch(homeViewmodelProvider);
     final generalState = ref.watch(generalViewModelProvider);
 
-    return _isLoading
-        ? const Center(
-            child:
-                CircularProgressIndicator(), // Show loading indicator when _isLoading is true
-          )
-        : SingleChildScrollView(
-            key: const PageStorageKey<String>('expense_log'),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Column(
-                children: [
-                  WidgetHeader(
-                    percent: homeState.percent,
-                    totalValue: homeState.totalValue,
-                    budgetValue: homeState.budgetValue,
-                    canEdit: false,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: WidgetCategoryStats(
-                      budgetValue: generalState.budgetValue,
-                      categoriesSum: generalState.categorySum,
-                    ),
-                  ),
-                ],
+    return SingleChildScrollView(
+      key: const PageStorageKey<String>('general_log'),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            WidgetHeader(
+              percent: homeState.percent,
+              totalValue: homeState.totalValue,
+              budgetValue: homeState.budgetValue,
+              canEdit: false,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: WidgetCategoryStats(
+                budgetValue: generalState.budgetValue,
+                categoriesSum: generalState.categorySum,
               ),
             ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 }
