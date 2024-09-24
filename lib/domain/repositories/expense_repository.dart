@@ -23,7 +23,7 @@ abstract class ExpenseRepository<T> extends Repository<T> {
   Future<List<Expense>> getObjectsWithDistinctValues();
   Future<List<Expense>> getOnlyFirstObject();
   Future<List<Expense>> deleteOnlyFirstObject();
-  Future<int> getTotalObjects();
+  Stream<int> getTotalObjects();
   Future<void> clearData();
   Future<List<String?>> getPaymentProperty();
   Stream<double> totalExpenses();

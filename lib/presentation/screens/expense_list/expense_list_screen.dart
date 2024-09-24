@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_empty.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_list_with_filter.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_list_without_filter.dart';
@@ -37,6 +38,11 @@ class _WidgetExpenseListState extends ConsumerState<ExpenseListScreen> {
     }
   }
 
+  Future<void> dismissExpense(Expense expense) async {
+    final exepsneListVM = ref.read(expenseListViewmodelProvider.notifier);
+    await exepsneListVM.deleteExpense(expense);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.filter) {
@@ -57,6 +63,9 @@ class _WidgetExpenseListState extends ConsumerState<ExpenseListScreen> {
           ? expenseListViewmodel.expensesAll
           : expenseListViewmodel.expensesToday,
       canScroll: widget.canScroll,
+      onDissmissed: (expense) {
+        return dismissExpense(expense);
+      },
     );
   }
 }

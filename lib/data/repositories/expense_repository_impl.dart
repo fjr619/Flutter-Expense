@@ -246,8 +246,10 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   }
 
   @override
-  Future<int> getTotalObjects() async {
-    return await isar.expenses.where().count();
+  Stream<int> getTotalObjects() {
+    return isar.expenses.watchLazy(fireImmediately: true).asyncMap((_) async {
+      return await isar.expenses.where().count();
+    });
   }
 
   @override

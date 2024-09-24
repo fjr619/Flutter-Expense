@@ -30,4 +30,16 @@ class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
       },
     );
   }
+
+  Future<void> deleteExpense(Expense expense) async {
+    await expenseRepository.deletObject(expense);
+  }
+
+  @override
+  void dispose() {
+    _allExpenseSubscription?.cancel();
+    _todayExpenseSubscription?.cancel();
+
+    super.dispose();
+  }
 }
