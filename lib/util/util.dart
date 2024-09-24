@@ -58,6 +58,10 @@ enum Filterby {
   insertion
 }
 
+enum Amountfilter { greaterThan, lessThan }
+
+enum Orderfilter { findfirst, deletefirst }
+
 // Extension on Filterby for converting enum to string
 extension FilterbyExtension on Filterby {
   String get toShortString =>

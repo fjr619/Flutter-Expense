@@ -54,6 +54,104 @@ class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
     });
   }
 
+  void filterByAmountGreaterThan(double amount) async {
+    await expenseRepository
+        .getObjectsWithAmountGreaterThan(amount)
+        .then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByAmountLessThan(double amount) async {
+    await expenseRepository.getObjectsWithAmountLessThan(amount).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByAmountAndCategory(
+      CategoryEnum value, double amountHighValue) async {
+    await expenseRepository
+        .getObjectsByOptions(value, amountHighValue)
+        .then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByNotOthersCategory() async {
+    await expenseRepository.getObjectsNotOthersCategory().then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByGroupFilter(String searchText, DateTime dateTime) async {
+    log('$searchText ${dateTime.toString()}');
+    await expenseRepository
+        .getObjectsByGroupFilter(searchText, dateTime)
+        .then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByPaymentMethod(String searchText) async {
+    await expenseRepository.getObjectsBySearchText(searchText).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByUsingAny(List<CategoryEnum> categories) async {
+    await expenseRepository.getObjectsUsingAnyOf(categories).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByUsingAll(List<CategoryEnum> categories) async {
+    await expenseRepository.getObjectsUsingAllOf(categories).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterbyTags(int tags) async {
+    await expenseRepository.getObjectsWithTags(tags).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByTagName(String tagName) async {
+    await expenseRepository.getObjectsWithTagName(tagName).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterBySubCategory(String subCategory) async {
+    await expenseRepository.getObjectsBySubCategory(subCategory).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByReceipt(String receiptName) async {
+    await expenseRepository.getObjectsByReceipts(receiptName).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByPagination(int offset) async {
+    await expenseRepository.getObjectsAndPaginate(offset).then((value) {
+      state = state.copyWith(expensesFilter: state.expensesFilter + value);
+    });
+  }
+
+  void filterByFindingFirst() async {
+    await expenseRepository.getOnlyFirstObject().then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByDeletingFirst() async {
+    await expenseRepository.deleteOnlyFirstObject().then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
   @override
   void dispose() {
     _allExpenseSubscription?.cancel();

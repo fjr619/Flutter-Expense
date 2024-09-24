@@ -124,7 +124,7 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
     return await isar.expenses
         .filter()
         .categoryEqualTo(value)
-        .or()
+        .and()
         .amountGreaterThan(amountHighValue)
         .findAll();
   }
@@ -144,8 +144,10 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
     return await isar.expenses
         .filter()
         .categoryEqualTo(CategoryEnum.others)
-        .group((q) =>
-            q.paymentMethodContains(searchText).or().dateEqualTo(dateTime))
+        .group((q) => q
+            .paymentMethodContains(searchText, caseSensitive: false)
+            .and()
+            .dateEqualTo(dateTime))
         .findAll();
   }
 
