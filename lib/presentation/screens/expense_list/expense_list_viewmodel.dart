@@ -38,8 +38,18 @@ class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
     await expenseRepository.deletObject(expense);
   }
 
+  void resetExpenseFilter() {
+    state = state.copyWith(expensesFilter: []);
+  }
+
   void filterByCategory(CategoryEnum value) async {
     await expenseRepository.getObjectsByCategory(value).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
+  }
+
+  void filterByAmountRange(double low, double high) async {
+    await expenseRepository.getObjectsByAmountRange(low, high).then((value) {
       state = state.copyWith(expensesFilter: value);
     });
   }
