@@ -96,6 +96,8 @@ class ExpenseViewmodel extends StateNotifier<ExpenseState> {
         receiptDatas: List.from(state.receiptDatas)
           ..add({'receipt': receipt, 'image': imageBytes}));
 
+    // log('newFile $appPath/$filename');
+
     onFinishUpload();
   }
 

@@ -51,38 +51,43 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
             body: Center(child: CircularProgressIndicator()),
           )
         : Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading:
-                  false, // Remove the default back button
-              flexibleSpace: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  title: Text(
-                    DateFormat.EEEE().format(detailState.expense!.date),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Colors.teal, // White text for AppBar
+            appBar: PreferredSize(
+              preferredSize:
+                  const Size.fromHeight(65.0), // Set the height of the AppBar
+              child: AppBar(
+                automaticallyImplyLeading: false,
+                flexibleSpace: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: SafeArea(
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(0),
+                      title: Text(
+                        DateFormat.EEEE().format(detailState.expense!.date),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.teal, // White text for AppBar
+                        ),
+                      ),
+                      subtitle: Text(
+                        "${DateFormat.d().format(detailState.expense!.date)} ${DateFormat.MMMM().format(detailState.expense!.date)}",
+                        style: const TextStyle(
+                          color: Colors.teal,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.cancel,
+                            size: 30, color: Colors.teal),
+                        onPressed: () {
+                          context.pop();
+                        },
+                      ),
                     ),
-                  ),
-                  subtitle: Text(
-                    "${DateFormat.d().format(detailState.expense!.date)} ${DateFormat.MMMM().format(detailState.expense!.date)}",
-                    style: const TextStyle(
-                      color: Colors.teal,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  trailing: IconButton(
-                    icon:
-                        const Icon(Icons.cancel, size: 30, color: Colors.teal),
-                    onPressed: () {
-                      context.pop();
-                    },
                   ),
                 ),
+                surfaceTintColor: Colors.transparent,
               ),
-              surfaceTintColor: Colors.transparent,
             ),
             body: detailState.expense != null
                 ? SingleChildScrollView(

@@ -1,10 +1,12 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_expensetracker/domain/models/expense.dart';
 
 class WidgetExpenseListWithFilter extends StatelessWidget {
-  const WidgetExpenseListWithFilter({super.key});
+  final List<Expense> expensesFilter;
+  const WidgetExpenseListWithFilter({super.key, required this.expensesFilter});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Text("data list ${expensesFilter.length}");
   }
 }

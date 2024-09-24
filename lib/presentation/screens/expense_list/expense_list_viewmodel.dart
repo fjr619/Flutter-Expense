@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/domain/repositories/expense_repository.dart';
@@ -11,7 +12,9 @@ class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
   StreamSubscription<List<Expense>>? _todayExpenseSubscription;
 
   ExpenseListViewmodel({required this.expenseRepository})
-      : super(ExpenseListState());
+      : super(ExpenseListState()) {
+    log("== init expense list view model");
+  }
 
   void getAllExpense() {
     _allExpenseSubscription?.cancel();
@@ -33,6 +36,12 @@ class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
 
   Future<void> deleteExpense(Expense expense) async {
     await expenseRepository.deletObject(expense);
+  }
+
+  void filterByCategory(CategoryEnum value) async {
+    await expenseRepository.getObjectsByCategory(value).then((value) {
+      state = state.copyWith(expensesFilter: value);
+    });
   }
 
   @override

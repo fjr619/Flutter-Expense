@@ -8,13 +8,11 @@ import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExpenseListScreen extends ConsumerStatefulWidget {
-  final bool filter;
   final bool all;
   final bool canScroll;
 
   const ExpenseListScreen({
     super.key,
-    required this.filter,
     required this.all,
     this.canScroll = false,
   });
@@ -29,12 +27,10 @@ class _WidgetExpenseListState extends ConsumerState<ExpenseListScreen> {
     super.initState();
     final exepsneListVM = ref.read(expenseListViewmodelProvider.notifier);
 
-    if (!widget.filter) {
-      if (widget.all) {
-        exepsneListVM.getAllExpense();
-      } else {
-        exepsneListVM.getTodayExpense();
-      }
+    if (widget.all) {
+      exepsneListVM.getAllExpense();
+    } else {
+      exepsneListVM.getTodayExpense();
     }
   }
 
@@ -45,10 +41,6 @@ class _WidgetExpenseListState extends ConsumerState<ExpenseListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.filter) {
-      return const WidgetExpenseListWithFilter();
-    }
-
     final expenseListViewmodel = ref.watch(expenseListViewmodelProvider);
 
     if ((widget.all && expenseListViewmodel.expensesAll.isEmpty) ||

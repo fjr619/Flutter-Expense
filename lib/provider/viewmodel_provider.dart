@@ -43,7 +43,7 @@ final expenseListViewmodelProvider =
 );
 
 final expenseViewmodelProvider =
-    StateNotifierProvider<ExpenseViewmodel, ExpenseState>((ref) {
+    StateNotifierProvider.autoDispose<ExpenseViewmodel, ExpenseState>((ref) {
   final ReceiptRepository<Receipt> receiptRepository =
       ref.watch(receiptRepositoryProvider);
   final ExpenseRepository<Expense> expenseRepository =

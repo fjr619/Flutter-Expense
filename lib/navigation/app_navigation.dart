@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
+import 'package:flutter_expensetracker/presentation/components/widget_category_item.dart';
 import 'package:flutter_expensetracker/presentation/screens/detail/detail_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_screen.dart';
+import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_viewmodel.dart';
+import 'package:flutter_expensetracker/presentation/screens/filter/filter_by/filter_by_screen.dart';
+import 'package:flutter_expensetracker/presentation/screens/filter/filter/filter_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/gallery/gallery_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/settings/settings_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/stats_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/wrapper/app_wrapper.dart';
+import 'package:flutter_expensetracker/provider/repository_provider.dart';
+import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
+import 'package:flutter_expensetracker/util/util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -114,6 +121,42 @@ class AppNavigation {
           );
         },
       ),
+      GoRoute(
+        path: "/filterby",
+        name: "filterby",
+        pageBuilder: (context, state) {
+          return _buildTransitionpage(
+            key: state.pageKey,
+            child: const FilterByScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: "/filter/:type",
+        name: "filter",
+        pageBuilder: (context, state) {
+          final String type = state.pathParameters['type']!;
+          return _buildTransitionpage(
+            key: state.pageKey,
+            child: ProviderScope(
+              overrides: [
+                expenseListViewmodelProvider.overrideWith(
+                  (ref) {
+                    final expenseRepository =
+                        ref.watch(expenseRepositoryProvider);
+                    return ExpenseListViewmodel(
+                      expenseRepository: expenseRepository,
+                    );
+                  },
+                ),
+              ],
+              child: FilterScreen(
+                type: int.parse(type),
+              ),
+            ),
+          );
+        },
+      ),
     ],
   );
 }
@@ -138,4 +181,12 @@ CustomTransitionPage _buildTransitionpage<T>({
 
 void goToDetail(BuildContext context, Expense expense) {
   context.pushNamed('detail', pathParameters: {'id': expense.id.toString()});
+}
+
+void goToFilterby(BuildContext context) {
+  context.pushNamed('filterby');
+}
+
+void gotoFilter(BuildContext context, int type) {
+  context.pushNamed('filter', pathParameters: {'type': type.toString()});
 }

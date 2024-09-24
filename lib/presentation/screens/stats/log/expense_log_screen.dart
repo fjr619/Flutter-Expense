@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_screen.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,7 +35,6 @@ class _ExpenseLogScreenState extends ConsumerState<ExpenseLogScreen> {
   @override
   void initState() {
     super.initState();
-    log('init _ExpenseLogScreenState');
     loadData();
   }
 
@@ -49,7 +49,7 @@ class _ExpenseLogScreenState extends ConsumerState<ExpenseLogScreen> {
             alignment: Alignment.centerRight,
             child: IconButton(
                 onPressed: () {
-                  //TODO
+                  goToFilterby(context);
                 },
                 icon: const Icon(
                   Icons.tune,
@@ -65,7 +65,6 @@ class _ExpenseLogScreenState extends ConsumerState<ExpenseLogScreen> {
               child: Padding(
             padding: EdgeInsets.only(top: 5),
             child: ExpenseListScreen(
-              filter: false,
               all: true,
               canScroll: true,
             ),

@@ -54,7 +54,6 @@ class HomeScreen extends ConsumerWidget {
             const Padding(
               padding: EdgeInsets.only(top: 8),
               child: ExpenseListScreen(
-                filter: false,
                 all: false,
               ),
             ),
