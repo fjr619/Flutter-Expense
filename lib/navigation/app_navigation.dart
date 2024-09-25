@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
-import 'package:flutter_expensetracker/domain/repositories/receipt_repository.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_full_image.dart';
 import 'package:flutter_expensetracker/presentation/screens/detail/detail_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_screen.dart';

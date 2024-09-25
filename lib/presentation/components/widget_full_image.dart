@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:go_router/go_router.dart';
 
 const _kRouteDuration = Duration(milliseconds: 300);
