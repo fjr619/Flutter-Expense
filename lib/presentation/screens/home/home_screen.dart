@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_date.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_screen.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_header.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_title.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -30,7 +32,11 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           (homeState.isLoading)
               ? const CircularProgressIndicator(color: Colors.teal)
-              : IconButton(onPressed: () {}, icon: const Icon(Icons.sync)),
+              : IconButton(
+                  onPressed: () {
+                    context.pushNamed('gallery2');
+                  },
+                  icon: const Icon(Icons.sync)),
           IconButton(onPressed: () {}, icon: const Icon(Icons.search))
         ],
       ),

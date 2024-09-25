@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/log/expense_log_screen.dart';
-import 'package:flutter_expensetracker/presentation/screens/stats/stats_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';

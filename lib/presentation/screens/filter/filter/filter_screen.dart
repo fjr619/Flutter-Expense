@@ -2,10 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
-import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_category_item.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_list_with_filter.dart';
-import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_screen.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_expensetracker/util/util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

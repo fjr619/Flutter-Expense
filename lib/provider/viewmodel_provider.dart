@@ -10,6 +10,8 @@ import 'package:flutter_expensetracker/presentation/screens/detail/detail_state.
 import 'package:flutter_expensetracker/presentation/screens/detail/detail_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_state.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_viewmodel.dart';
+import 'package:flutter_expensetracker/presentation/screens/gallery/gallery_state.dart';
+import 'package:flutter_expensetracker/presentation/screens/gallery/gallery_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_state.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/general/general_state.dart';
@@ -36,9 +38,11 @@ final homeViewmodelProvider = StateNotifierProvider<HomeViewmodel, HomeState>(
 final expenseListViewmodelProvider =
     StateNotifierProvider<ExpenseListViewmodel, ExpenseListState>(
   (ref) {
-    final ExpenseRepository<Expense> expenseRepository =
-        ref.watch(expenseRepositoryProvider);
-    return ExpenseListViewmodel(expenseRepository: expenseRepository);
+    final receiptRepository = ref.watch(receiptRepositoryProvider);
+    final expenseRepository = ref.watch(expenseRepositoryProvider);
+    return ExpenseListViewmodel(
+        expenseRepository: expenseRepository,
+        receiptRepository: receiptRepository);
   },
 );
 
@@ -82,5 +86,14 @@ final expenseLogViewModelProvider =
     final ExpenseRepository<Expense> expenseRepository =
         ref.watch(expenseRepositoryProvider);
     return ExpenseLogViewmodel(expenseRepository: expenseRepository);
+  },
+);
+
+final galleryViewModelProvider =
+    StateNotifierProvider<GalleryViewmodel, GalleryState>(
+  (ref) {
+    final ReceiptRepository<Receipt> receiptRepository =
+        ref.watch(receiptRepositoryProvider);
+    return GalleryViewmodel(receiptRepository: receiptRepository);
   },
 );

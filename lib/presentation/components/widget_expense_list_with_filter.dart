@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
-import 'package:flutter_expensetracker/navigation/app_navigation.dart';
+import 'package:flutter_expensetracker/presentation/components/widget_empty.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_list_item.dart';
-import 'package:flutter_expensetracker/util/util.dart';
-import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 
 class WidgetExpenseListWithFilter extends StatelessWidget {
   final List<Expense> expensesFilter;
@@ -12,6 +9,12 @@ class WidgetExpenseListWithFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (expensesFilter.isEmpty) {
+      return const WidgetEmpty(
+        subtitle: 'No expenses available yet',
+      );
+    }
+
     return ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

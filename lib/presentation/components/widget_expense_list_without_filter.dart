@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
-import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_list_item.dart';
-import 'package:flutter_expensetracker/util/util.dart';
-import 'package:gap/gap.dart';
-import 'package:intl/intl.dart';
 
 class WidgetExpenseListWithoutFilter extends StatelessWidget {
   final List<Expense> expenses;

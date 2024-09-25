@@ -2,19 +2,21 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_expensetracker/domain/models/expense.dart';
+import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/domain/repositories/expense_repository.dart';
+import 'package:flutter_expensetracker/domain/repositories/receipt_repository.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
   final ExpenseRepository<Expense> expenseRepository;
+  final ReceiptRepository<Receipt> receiptRepository;
   StreamSubscription<List<Expense>>? _allExpenseSubscription;
   StreamSubscription<List<Expense>>? _todayExpenseSubscription;
 
-  ExpenseListViewmodel({required this.expenseRepository})
-      : super(ExpenseListState()) {
-    log("== init expense list view model");
-  }
+  ExpenseListViewmodel(
+      {required this.expenseRepository, required this.receiptRepository})
+      : super(ExpenseListState());
 
   void getAllExpense() {
     _allExpenseSubscription?.cancel();
@@ -35,6 +37,11 @@ class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
   }
 
   Future<void> deleteExpense(Expense expense) async {
+    await expense.receipts.load();
+    for (final receipt in expense.receipts) {
+      await receiptRepository.deletObject(receipt);
+    }
+
     await expenseRepository.deletObject(expense);
   }
 
@@ -136,7 +143,7 @@ class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
 
   void filterByPagination(int offset) async {
     await expenseRepository.getObjectsAndPaginate(offset).then((value) {
-      state = state.copyWith(expensesFilter: state.expensesFilter + value);
+      state = state.copyWith(expensesFilter: value);
     });
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
-import 'package:flutter_expensetracker/presentation/components/widget_category_item.dart';
+import 'package:flutter_expensetracker/domain/repositories/receipt_repository.dart';
+import 'package:flutter_expensetracker/presentation/components/widget_full_image.dart';
 import 'package:flutter_expensetracker/presentation/screens/detail/detail_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_viewmodel.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_expensetracker/presentation/screens/stats/stats_screen.d
 import 'package:flutter_expensetracker/presentation/screens/wrapper/app_wrapper.dart';
 import 'package:flutter_expensetracker/provider/repository_provider.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
-import 'package:flutter_expensetracker/util/util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -109,6 +109,11 @@ class AppNavigation {
         ],
       ),
       GoRoute(
+        path: "/gallery2",
+        name: "gallery2",
+        builder: (context, state) => const GalleryScreen(),
+      ),
+      GoRoute(
         path: "/detail/:id",
         name: "detail",
         pageBuilder: (context, state) {
@@ -142,11 +147,13 @@ class AppNavigation {
               overrides: [
                 expenseListViewmodelProvider.overrideWith(
                   (ref) {
+                    final receiptRepository =
+                        ref.watch(receiptRepositoryProvider);
                     final expenseRepository =
                         ref.watch(expenseRepositoryProvider);
                     return ExpenseListViewmodel(
-                      expenseRepository: expenseRepository,
-                    );
+                        expenseRepository: expenseRepository,
+                        receiptRepository: receiptRepository);
                   },
                 ),
               ],
@@ -157,6 +164,21 @@ class AppNavigation {
           );
         },
       ),
+      GoRoute(
+          path: "/fullScreenViewer",
+          name: "fullScreenViewer",
+          builder: (context, state) {
+            final Map<String, dynamic> data =
+                state.extra as Map<String, dynamic>;
+            return FullScreenViewer(
+              tag: data['tag'],
+              backgroundColor: data['backgroundColor'],
+              backgroundIsTransparent: data['backgroundIsTransparent'],
+              disposeLevel: data['disposeLevel'],
+              disableSwipeToDismiss: data['disableSwipeToDismiss'],
+              child: data['child'],
+            );
+          }),
     ],
   );
 }
