@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/util/util.dart';
 import 'package:go_router/go_router.dart';
 
-class FullScreenViewer extends StatefulWidget {
-  const FullScreenViewer(
+class FullImageScreen extends StatefulWidget {
+  const FullImageScreen(
       {super.key,
       // required this.child,
       required this.tag,
@@ -37,10 +37,10 @@ class FullScreenViewer extends StatefulWidget {
   final Map<String, String>? headers;
 
   @override
-  State<FullScreenViewer> createState() => _FullScreenViewerState();
+  State<FullImageScreen> createState() => _FullImageScreenState();
 }
 
-class _FullScreenViewerState extends State<FullScreenViewer> {
+class _FullImageScreenState extends State<FullImageScreen> {
   double? _initialPositionY = 0;
 
   double? _currentPositionY = 0;

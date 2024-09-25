@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
-import 'package:flutter_expensetracker/presentation/components/widget_full_image.dart';
 import 'package:flutter_expensetracker/presentation/screens/detail/detail_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense/expense_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_viewmodel.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_expensetracker/presentation/screens/filter/filter_by/fil
 import 'package:flutter_expensetracker/presentation/screens/filter/filter/filter_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/gallery/gallery_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_screen.dart';
+import 'package:flutter_expensetracker/presentation/screens/image/full_image_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/settings/settings_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/stats_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/wrapper/app_wrapper.dart';
@@ -164,7 +164,7 @@ class AppNavigation {
           builder: (context, state) {
             final Map<String, dynamic> data =
                 state.extra as Map<String, dynamic>;
-            return FullScreenViewer(
+            return FullImageScreen(
               tag: data['tag'],
               backgroundColor: data['backgroundColor'],
               backgroundIsTransparent: data['backgroundIsTransparent'],

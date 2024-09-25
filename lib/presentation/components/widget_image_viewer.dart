@@ -1,24 +1,25 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/util/util.dart';
-import 'package:go_router/go_router.dart';
 
 /// A widget that provides an interactive image viewer with support for different image sources.
-class InstaImageViewer extends StatelessWidget {
+class ImageViewer extends StatelessWidget {
   /// Private constructor to be used by the factory constructors.
-  const InstaImageViewer._({
-    required this.tag,
-    required this.imageSourceType,
-    this.imageUrl,
-    this.assetPath,
-    this.file,
-    this.headers,
-    this.backgroundColor = Colors.black,
-    this.backgroundIsTransparent = true,
-    this.disposeLevel,
-    this.disableSwipeToDismiss = false,
-    required this.child,
-  });
+  const ImageViewer._(
+      {required this.tag,
+      required this.imageSourceType,
+      this.imageUrl,
+      this.assetPath,
+      this.file,
+      this.headers,
+      this.backgroundColor = Colors.black,
+      this.backgroundIsTransparent = true,
+      this.disposeLevel,
+      this.disableSwipeToDismiss = false,
+      required this.child,
+      required this.openFullScreenViewer});
+
+  final Function(Map<String, dynamic>) openFullScreenViewer;
 
   /// Hero tag to identify the Hero widget.
   final String tag;
@@ -54,7 +55,7 @@ class InstaImageViewer extends StatelessWidget {
   final Widget child;
 
   /// Factory constructor for network images.
-  factory InstaImageViewer.network({
+  factory ImageViewer.network({
     required String tag,
     required String imageUrl,
     Map<String, String>? headers,
@@ -63,8 +64,9 @@ class InstaImageViewer extends StatelessWidget {
     DisposeLevel? disposeLevel,
     bool disableSwipeToDismiss = false,
     required Widget child,
+    required Function(Map<String, dynamic>) openFullScreenViewer,
   }) {
-    return InstaImageViewer._(
+    return ImageViewer._(
       tag: tag,
       imageSourceType: ImageSourceType.url,
       imageUrl: imageUrl,
@@ -73,21 +75,23 @@ class InstaImageViewer extends StatelessWidget {
       backgroundIsTransparent: backgroundIsTransparent,
       disposeLevel: disposeLevel,
       disableSwipeToDismiss: disableSwipeToDismiss,
+      openFullScreenViewer: openFullScreenViewer,
       child: child,
     );
   }
 
   /// Factory constructor for asset images.
-  factory InstaImageViewer.asset({
+  factory ImageViewer.asset({
     required String tag,
     required String assetPath,
     Color backgroundColor = Colors.black,
     bool backgroundIsTransparent = true,
     DisposeLevel? disposeLevel,
     bool disableSwipeToDismiss = false,
+    required Function(Map<String, dynamic>) openFullScreenViewer,
     required Widget child,
   }) {
-    return InstaImageViewer._(
+    return ImageViewer._(
       tag: tag,
       imageSourceType: ImageSourceType.asset,
       assetPath: assetPath,
@@ -95,21 +99,23 @@ class InstaImageViewer extends StatelessWidget {
       backgroundIsTransparent: backgroundIsTransparent,
       disposeLevel: disposeLevel,
       disableSwipeToDismiss: disableSwipeToDismiss,
+      openFullScreenViewer: openFullScreenViewer,
       child: child,
     );
   }
 
   /// Factory constructor for file images.
-  factory InstaImageViewer.file({
+  factory ImageViewer.file({
     required String tag,
     required File file,
     Color backgroundColor = Colors.black,
     bool backgroundIsTransparent = true,
     DisposeLevel? disposeLevel,
     bool disableSwipeToDismiss = false,
+    required Function(Map<String, dynamic>) openFullScreenViewer,
     required Widget child,
   }) {
-    return InstaImageViewer._(
+    return ImageViewer._(
       tag: tag,
       imageSourceType: ImageSourceType.file,
       file: file,
@@ -117,6 +123,7 @@ class InstaImageViewer extends StatelessWidget {
       backgroundIsTransparent: backgroundIsTransparent,
       disposeLevel: disposeLevel,
       disableSwipeToDismiss: disableSwipeToDismiss,
+      openFullScreenViewer: openFullScreenViewer,
       child: child,
     );
   }
@@ -134,7 +141,7 @@ class InstaImageViewer extends StatelessWidget {
 
   /// Opens the full-screen image viewer with appropriate data.
   void _openFullScreenViewer(BuildContext context) {
-    final viewerData = {
+    final Map<String, dynamic> viewerData = {
       'tag': tag,
       'backgroundColor': backgroundColor,
       'backgroundIsTransparent': backgroundIsTransparent,
@@ -147,6 +154,6 @@ class InstaImageViewer extends StatelessWidget {
       'headers': headers
     };
 
-    context.pushNamed('fullScreenViewer', extra: viewerData);
+    openFullScreenViewer(viewerData);
   }
 }
