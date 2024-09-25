@@ -49,7 +49,6 @@ class _FullImageScreenState extends State<FullImageScreen> {
                 animation.addStatusListener((status) {
                   if (status == AnimationStatus.completed ||
                       status == AnimationStatus.dismissed) {
-                    log("finish anim");
                     setState(() {
                       isHeroAnimating = false;
                     });
@@ -59,7 +58,12 @@ class _FullImageScreenState extends State<FullImageScreen> {
                 if (flightDirection == HeroFlightDirection.push) {
                   return toHeroContext.widget;
                 } else {
-                  return fromHeroContext.widget;
+                  return Material(
+                    color: Colors.transparent,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: fromHeroContext.widget),
+                  );
                 }
               },
             ),
