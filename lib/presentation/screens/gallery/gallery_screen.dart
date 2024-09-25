@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_empty.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_image_item.dart';
-import 'package:flutter_expensetracker/presentation/screens/image/full_image_screen.dart';
 import 'package:flutter_expensetracker/provider/directory_provider.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:photo_view/photo_view.dart';
 
 class GalleryScreen extends ConsumerStatefulWidget {
   const GalleryScreen({super.key});

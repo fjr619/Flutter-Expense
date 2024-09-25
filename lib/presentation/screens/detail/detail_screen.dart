@@ -154,6 +154,13 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                                 return WidgetImageItem(
                                   file: file,
                                   tag: 'image-detail-$index',
+                                  onTap: () {
+                                    context
+                                        .pushNamed('fullScreenViewer', extra: {
+                                      'tag': 'image-detail-$index',
+                                      'file': file,
+                                    });
+                                  },
                                 );
                               },
                             ),
