@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_empty.dart';
-import 'package:flutter_expensetracker/presentation/components/widget_full_image.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_image_item.dart';
 import 'package:flutter_expensetracker/provider/directory_provider.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
@@ -63,7 +62,10 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> {
                     return Column(
                       children: [
                         Flexible(
-                          child: WidgetImageItem(file: file),
+                          child: WidgetImageItem(
+                            file: file,
+                            tag: "image-gallery-$index",
+                          ),
                         ),
                         const Text("aaaaa")
                       ],

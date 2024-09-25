@@ -1,8 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_divier.dart';
-import 'package:flutter_expensetracker/presentation/components/widget_full_image.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_image_item.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_title.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
@@ -11,7 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:photo_view/photo_view.dart';
 
 class DetailScreen extends ConsumerStatefulWidget {
   final String expenseId;
@@ -29,6 +28,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
   @override
   void initState() {
     super.initState();
+    log('== init detail screen');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await detailViewmodel.loadExpenseById(
         widget.expenseId,
@@ -151,7 +151,10 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                                     '$_path/${detailState.expense!.receipts.elementAt(index).name}';
                                 File file = File(filePath);
 
-                                return WidgetImageItem(file: file);
+                                return WidgetImageItem(
+                                  file: file,
+                                  tag: 'image-detail-$index',
+                                );
                               },
                             ),
                           ),
