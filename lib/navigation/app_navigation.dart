@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/presentation/screens/detail/detail_screen.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_expensetracker/provider/repository_provider.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:photo_view/photo_view.dart';
 
 class AppNavigation {
   static String initial = "/home";
@@ -162,20 +165,14 @@ class AppNavigation {
           path: "/fullScreenViewer",
           name: "fullScreenViewer",
           builder: (context, state) {
-            final Map<String, dynamic> data =
-                state.extra as Map<String, dynamic>;
+            final mapData = state.extra as Map<String, dynamic>;
+            String tag = mapData['tag'];
+            File file = mapData['file'];
             return FullImageScreen(
-              tag: data['tag'],
-              backgroundColor: data['backgroundColor'],
-              backgroundIsTransparent: data['backgroundIsTransparent'],
-              disposeLevel: data['disposeLevel'],
-              disableSwipeToDismiss: data['disableSwipeToDismiss'],
-              // child: data['child'],
-              imageSourceType: data['source_type'],
-              assetPath: data['data_asset'],
-              filePath: data['data_file'],
-              url: data['data_url'],
-              headers: data['headers'],
+              imageProvider: FileImage(file),
+              minScale: PhotoViewComputedScale.contained * 1,
+              maxScale: PhotoViewComputedScale.covered * 2.0,
+              tag: tag,
             );
           }),
     ],

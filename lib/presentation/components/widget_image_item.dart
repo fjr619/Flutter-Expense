@@ -1,33 +1,35 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_expensetracker/presentation/components/widget_image_viewer.dart';
-import 'package:flutter_expensetracker/util/util.dart';
-import 'package:go_router/go_router.dart';
 
 class WidgetImageItem extends StatelessWidget {
   final String tag;
   final File file;
-  const WidgetImageItem({super.key, required this.tag, required this.file});
+  final Function()? onTap;
+  const WidgetImageItem(
+      {super.key, required this.tag, required this.file, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: ImageViewer.file(
-          disposeLevel: DisposeLevel.medium,
-          tag: tag,
-          file: file,
-          child: Image.file(
-            file,
-            fit: BoxFit.cover,
-            width: double.infinity,
+    return Hero(
+      tag: tag,
+      child: Material(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.transparent, // Use transparent to keep only ripple effect
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            image: DecorationImage(
+              image: FileImage(file),
+              fit: BoxFit.cover,
+            ),
           ),
-          openFullScreenViewer: (data) {
-            context.pushNamed('fullScreenViewer', extra: data);
-          },
+          child: InkWell(
+            borderRadius:
+                BorderRadius.circular(12), // Same as Material's border radius
+            onTap: onTap,
+            splashColor: Colors.teal.withOpacity(0.3),
+          ),
         ),
       ),
     );
