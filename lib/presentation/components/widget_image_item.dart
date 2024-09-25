@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_full_image.dart';
+import 'package:flutter_expensetracker/presentation/components/widget_image_viewer.dart';
 
 class WidgetImageItem extends StatelessWidget {
   final String tag;
@@ -16,11 +17,12 @@ class WidgetImageItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: AspectRatio(
         aspectRatio: 1,
-        child: InstaImageViewer(
+        child: InstaImageViewer.file(
           tag: tag,
+          file: file,
           child: Image.file(
             file,
-            // fit: BoxFit.cover,
+            fit: BoxFit.cover,
             width: double.infinity,
           ),
         ),

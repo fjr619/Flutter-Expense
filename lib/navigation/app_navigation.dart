@@ -170,7 +170,12 @@ class AppNavigation {
               backgroundIsTransparent: data['backgroundIsTransparent'],
               disposeLevel: data['disposeLevel'],
               disableSwipeToDismiss: data['disableSwipeToDismiss'],
-              child: data['child'],
+              // child: data['child'],
+              imageSourceType: data['source_type'],
+              assetPath: data['data_asset'],
+              filePath: data['data_file'],
+              url: data['data_url'],
+              headers: data['headers'],
             );
           }),
     ],

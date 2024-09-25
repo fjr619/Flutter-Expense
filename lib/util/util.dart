@@ -78,3 +78,11 @@ extension StringToFilterby on String {
     }
   }
 }
+
+/// Enum to represent different image source types.
+enum ImageSourceType { url, asset, file }
+
+/// Enum representing different levels of drag required to dismiss the image.
+enum DisposeLevel { high, medium, low }
+
+const kRouteDuration = Duration(milliseconds: 300);

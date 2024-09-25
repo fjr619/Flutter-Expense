@@ -1,114 +1,40 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_expensetracker/util/util.dart';
 import 'package:go_router/go_router.dart';
 
-const _kRouteDuration = Duration(milliseconds: 300);
-
-class InstaImageViewer extends StatelessWidget {
-  const InstaImageViewer({
-    super.key,
-    required this.child,
-    required this.tag,
-    this.imageUrl,
-    this.headers,
-    this.backgroundColor = Colors.black,
-    this.backgroundIsTransparent = true,
-    this.disposeLevel,
-    this.disableSwipeToDismiss = false,
-  });
-
-  final String tag;
-
-  /// Image widget
-  /// For example Image(image:Image.network("https://picsum.photos/id/507/1000").image,)
-  final Widget child;
-
-  /// Image url
-  /// If imageUrl is not null, child will be ignored when large image is opened
-  final String? imageUrl;
-
-  /// headers
-  final Map<String, String>? headers;
-
-  /// Background in the full screen mode, Colors.black by default
-  final Color backgroundColor;
-
-  /// Make background transparent
-  final bool backgroundIsTransparent;
-
-  /// After what level of drag from top image should be dismissed
-  /// high - 300px, middle - 200px, low - 100px
-  final DisposeLevel? disposeLevel;
-
-  /// if true the swipe down\up will be disabled
-  /// - it gives more predictable behaviour
-  final bool disableSwipeToDismiss;
-
-  @override
-  Widget build(BuildContext context) {
-    print('tag InstaImageViewer $tag');
-    return Hero(
-      tag: tag,
-      child: GestureDetector(
-        onTap: () {
-          final Map<String, dynamic> data = {
-            'tag': tag,
-            'backgroundColor': backgroundColor,
-            'backgroundIsTransparent': backgroundIsTransparent,
-            'disposeLevel': disposeLevel,
-            'disableSwipeToDismiss': disableSwipeToDismiss,
-            'child': imageUrl != null
-                ? Image.network(
-                    imageUrl!,
-                    headers: headers,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      );
-                    },
-                  )
-                : child,
-          };
-
-          context.pushNamed('fullScreenViewer', extra: data);
-        },
-        child: child,
-      ),
-    );
-  }
-}
-
-enum DisposeLevel { high, medium, low }
-
 class FullScreenViewer extends StatefulWidget {
-  const FullScreenViewer({
-    super.key,
-    required this.child,
-    required this.tag,
-    required this.disableSwipeToDismiss,
-    this.backgroundColor = Colors.black,
-    this.backgroundIsTransparent = true,
-    this.disposeLevel = DisposeLevel.medium,
-  });
+  const FullScreenViewer(
+      {super.key,
+      // required this.child,
+      required this.tag,
+      required this.disableSwipeToDismiss,
+      this.backgroundColor = Colors.black,
+      this.backgroundIsTransparent = true,
+      this.disposeLevel = DisposeLevel.medium,
+      required this.imageSourceType,
+      this.url,
+      this.assetPath,
+      this.filePath,
+      this.headers});
 
-  final Widget child;
+  // final Widget child;
   final Color backgroundColor;
   final bool backgroundIsTransparent;
   final DisposeLevel? disposeLevel;
   final String tag;
   final bool disableSwipeToDismiss;
+
+  final ImageSourceType imageSourceType;
+  final String? url;
+  final String? assetPath;
+  final String? filePath;
+  final Map<String, String>? headers;
 
   @override
   State<FullScreenViewer> createState() => _FullScreenViewerState();
@@ -162,7 +88,7 @@ class _FullScreenViewerState extends State<FullScreenViewer> {
       context.pop();
     } else {
       setState(() {
-        _animationDuration = _kRouteDuration;
+        _animationDuration = kRouteDuration;
         _opacity = 1;
         _positionYDelta = 0;
       });
@@ -194,6 +120,50 @@ class _FullScreenViewerState extends State<FullScreenViewer> {
     if (_positionYDelta > _disposeLimit || _positionYDelta < -_disposeLimit) {
       _opacity = 1;
     }
+  }
+
+  Widget _buildFullScreenImageWidget() {
+    switch (widget.imageSourceType) {
+      case ImageSourceType.url:
+        return _buildNetworkImage();
+      case ImageSourceType.asset:
+        return _buildAssetImage();
+      case ImageSourceType.file:
+        return _buildFileImage();
+    }
+  }
+
+  /// Returns a widget for displaying a network image.
+  Widget _buildNetworkImage() {
+    return Image.network(
+      widget.url!,
+      headers: widget.headers,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Center(
+          child: CircularProgressIndicator(
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded /
+                    loadingProgress.expectedTotalBytes!
+                : null,
+          ),
+        );
+      },
+    );
+  }
+
+  /// Returns a widget for displaying an asset image.
+  Widget _buildAssetImage() {
+    return Image.asset(
+      widget.assetPath!,
+    );
+  }
+
+  /// Returns a widget for displaying a file image.
+  Widget _buildFileImage() {
+    return Image.file(
+      File(widget.filePath!),
+    );
   }
 
   @override
@@ -229,7 +199,7 @@ class _FullScreenViewerState extends State<FullScreenViewer> {
                             Radius.circular(0),
                           ),
                           clipBehavior: Clip.hardEdge,
-                          child: widget.child,
+                          child: _buildFullScreenImageWidget(),
                         )
                       : KeymotionGestureDetector(
                           onStart: (details) => _dragStart(details),
@@ -240,7 +210,7 @@ class _FullScreenViewerState extends State<FullScreenViewer> {
                               Radius.circular(0),
                             ),
                             clipBehavior: Clip.hardEdge,
-                            child: widget.child,
+                            child: _buildFullScreenImageWidget(),
                           ),
                         ),
                 ),
