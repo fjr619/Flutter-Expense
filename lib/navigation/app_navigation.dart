@@ -108,11 +108,6 @@ class AppNavigation {
         ],
       ),
       GoRoute(
-        path: "/gallery2",
-        name: "gallery2",
-        builder: (context, state) => const GalleryScreen(),
-      ),
-      GoRoute(
         path: "/detail/:id",
         name: "detail",
         pageBuilder: (context, state) {

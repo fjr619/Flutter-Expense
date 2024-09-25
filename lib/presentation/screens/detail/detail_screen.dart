@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_divier.dart';
+import 'package:flutter_expensetracker/presentation/components/widget_full_image.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_image_item.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_title.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
@@ -150,93 +151,7 @@ class _DetailScreenState extends ConsumerState<DetailScreen> {
                                     '$_path/${detailState.expense!.receipts.elementAt(index).name}';
                                 File file = File(filePath);
 
-                                return FutureBuilder<bool>(
-                                  future: file.exists(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      if (snapshot.hasData && snapshot.data!) {
-                                        return WidgetImageItem(
-                                          file: file,
-                                          onclickItem: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return Dialog(
-                                                  insetPadding:
-                                                      const EdgeInsets.all(10),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                  ),
-                                                  child: LayoutBuilder(
-                                                    builder:
-                                                        (context, constraints) {
-                                                      // Constraints give us access to the dialog's width and height
-                                                      double dialogWidth =
-                                                          constraints.maxWidth;
-
-                                                      return Stack(
-                                                        children: [
-                                                          // PhotoView displaying the image
-                                                          PhotoView(
-                                                            imageProvider:
-                                                                FileImage(file),
-                                                          ),
-                                                          // Positioned Close Button relative to the width of the dialog
-                                                          Positioned(
-                                                            top: 10,
-                                                            right: dialogWidth *
-                                                                0.02, // Calculate position based on the dialog width
-                                                            child: IconButton(
-                                                              icon: const Icon(
-                                                                Icons
-                                                                    .cancel_rounded, // X icon
-                                                                size: 32,
-                                                                color: Colors
-                                                                    .teal, // White icon color
-                                                              ),
-                                                              onPressed: () {
-                                                                context
-                                                                    .pop(); // Close the dialog or perform the action
-                                                              },
-                                                              splashColor: Colors
-                                                                  .white
-                                                                  .withOpacity(
-                                                                      0.3), // Optional ripple color
-                                                              splashRadius:
-                                                                  24, // Ripple size
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          },
-                                        );
-                                      } else {
-                                        return Container(
-                                          width: 50,
-                                          height: 50,
-                                          color: Colors.grey[300],
-                                          child: const Icon(Icons.broken_image),
-                                        );
-                                      }
-                                    } else {
-                                      return Container(
-                                        width: 50,
-                                        height: 50,
-                                        color: Colors.grey[300],
-                                        child:
-                                            const CircularProgressIndicator(),
-                                      );
-                                    }
-                                  },
-                                );
+                                return WidgetImageItem(file: file);
                               },
                             ),
                           ),

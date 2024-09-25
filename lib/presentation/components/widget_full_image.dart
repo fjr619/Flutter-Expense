@@ -12,6 +12,7 @@ class InstaImageViewer extends StatelessWidget {
   const InstaImageViewer({
     super.key,
     required this.child,
+    required this.tag,
     this.imageUrl,
     this.headers,
     this.backgroundColor = Colors.black,
@@ -19,6 +20,8 @@ class InstaImageViewer extends StatelessWidget {
     this.disposeLevel,
     this.disableSwipeToDismiss = false,
   });
+
+  final String tag;
 
   /// Image widget
   /// For example Image(image:Image.network("https://picsum.photos/id/507/1000").image,)
@@ -47,8 +50,7 @@ class InstaImageViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UniqueKey tag = UniqueKey();
-    print('tag InstaImageViewer ${tag.hashCode}');
+    print('tag InstaImageViewer $tag');
     return Hero(
       tag: tag,
       child: GestureDetector(
@@ -105,7 +107,7 @@ class FullScreenViewer extends StatefulWidget {
   final Color backgroundColor;
   final bool backgroundIsTransparent;
   final DisposeLevel? disposeLevel;
-  final UniqueKey tag;
+  final String tag;
   final bool disableSwipeToDismiss;
 
   @override

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_empty.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_full_image.dart';
+import 'package:flutter_expensetracker/presentation/components/widget_image_item.dart';
 import 'package:flutter_expensetracker/provider/directory_provider.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +23,7 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> {
   @override
   Widget build(BuildContext context) {
     final galleryState = ref.watch(galleryViewModelProvider);
-    log("== aaaa");
+    log("== build gallery");
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -58,23 +59,11 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> {
                   ),
                   itemBuilder: (context, index) {
                     Receipt receipt = galleryState.receipts[index];
+                    File file = File('$path/${receipt.name}');
                     return Column(
-                      // Adjusts to the content size
                       children: [
                         Flexible(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: InstaImageViewer(
-                                child: Image.file(
-                                  File("$path/${receipt.name}"),
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                ),
-                              ),
-                            ),
-                          ),
+                          child: WidgetImageItem(file: file),
                         ),
                         const Text("aaaaa")
                       ],

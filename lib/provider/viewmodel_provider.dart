@@ -90,7 +90,7 @@ final expenseLogViewModelProvider =
 );
 
 final galleryViewModelProvider =
-    StateNotifierProvider<GalleryViewmodel, GalleryState>(
+    StateNotifierProvider.autoDispose<GalleryViewmodel, GalleryState>(
   (ref) {
     final ReceiptRepository<Receipt> receiptRepository =
         ref.watch(receiptRepositoryProvider);
