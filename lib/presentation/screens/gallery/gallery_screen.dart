@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_empty.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_full_image.dart';
+import 'package:flutter_expensetracker/provider/directory_provider.dart';
 import 'package:flutter_expensetracker/provider/viewmodel_provider.dart';
-import 'package:flutter_expensetracker/util/util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GalleryScreen extends ConsumerStatefulWidget {
@@ -17,17 +17,7 @@ class GalleryScreen extends ConsumerStatefulWidget {
 }
 
 class _GalleryScreenState extends ConsumerState<GalleryScreen> {
-  late String _path;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final galleryVM = ref.read(galleryViewModelProvider.notifier);
-      galleryVM.getAllReceipt();
-      _path = await getPath().then((value) => value);
-    });
-  }
+  late final path = ref.read(directoryProvider);
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +68,7 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> {
                               aspectRatio: 1,
                               child: InstaImageViewer(
                                 child: Image.file(
-                                  File("$_path/${receipt.name}"),
+                                  File("$path/${receipt.name}"),
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                 ),

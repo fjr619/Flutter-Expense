@@ -8,7 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GalleryViewmodel extends StateNotifier<GalleryState> {
   final ReceiptRepository<Receipt> receiptRepository;
-  GalleryViewmodel({required this.receiptRepository}) : super(GalleryState());
+  GalleryViewmodel({required this.receiptRepository}) : super(GalleryState()) {
+    log("== inti gallery vm");
+    getAllReceipt();
+  }
 
   StreamSubscription<List<Receipt>>? _receiptsSubscription;
 

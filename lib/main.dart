@@ -5,21 +5,28 @@ import 'package:flutter_expensetracker/domain/models/expense.dart';
 import 'package:flutter_expensetracker/domain/models/income.dart';
 import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/navigation/app_navigation.dart';
+import 'package:flutter_expensetracker/provider/directory_provider.dart';
 import 'package:flutter_expensetracker/provider/isar_provider.dart';
+import 'package:flutter_expensetracker/util/util.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   Isar isar;
-  final dir = await getApplicationDocumentsDirectory();
+  late String dir;
+  await getPath().then(
+    (value) {
+      dir = value;
+    },
+  );
+
   if (Isar.instanceNames.isEmpty) {
     isar = await Isar.open(
         [BudgetSchema, ExpenseSchema, ReceiptSchema, IncomeSchema],
-        directory: dir.path, name: 'expenseInstance');
+        directory: dir, name: 'expenseInstance');
   }
   isar = Isar.getInstance('expenseInstance')!;
 
@@ -39,6 +46,11 @@ void main() async {
     ProviderScope(
       overrides: [
         isarProvider.overrideWithValue(isar),
+        directoryProvider.overrideWith(
+          (ref) {
+            return CustomDirectoryNotifier(dir);
+          },
+        )
       ],
       child: const MyApp(),
     ),

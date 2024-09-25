@@ -48,7 +48,7 @@ class InstaImageViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UniqueKey tag = UniqueKey();
-    print('tag ${tag.hashCode}');
+    print('tag InstaImageViewer ${tag.hashCode}');
     return Hero(
       tag: tag,
       child: GestureDetector(
@@ -157,7 +157,7 @@ class _FullScreenViewerState extends State<FullScreenViewer> {
 
   _dragEnd(DragEndDetails details) {
     if (_positionYDelta > _disposeLimit || _positionYDelta < -_disposeLimit) {
-      Navigator.of(context).pop();
+      context.pop();
     } else {
       setState(() {
         _animationDuration = _kRouteDuration;
@@ -196,7 +196,7 @@ class _FullScreenViewerState extends State<FullScreenViewer> {
 
   @override
   Widget build(BuildContext context) {
-    print('tag ${widget.tag.hashCode}');
+    print('tag FullScreenViewer ${widget.tag.hashCode}');
     final horizontalPosition = 0 + max(_positionYDelta, -_positionYDelta) / 15;
     return Hero(
       tag: widget.tag,
@@ -248,7 +248,7 @@ class _FullScreenViewerState extends State<FullScreenViewer> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 60, 30, 0),
                   child: GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
+                    onTap: () => context.pop(),
                     child: Container(
                       width: 40,
                       height: 40,
