@@ -14,6 +14,7 @@ import 'package:flutter_expensetracker/presentation/screens/gallery/gallery_stat
 import 'package:flutter_expensetracker/presentation/screens/gallery/gallery_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_state.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_viewmodel.dart';
+import 'package:flutter_expensetracker/presentation/screens/search/search_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/general/general_state.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/general/general_viewmodel.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/log/expense_log_state.dart';
@@ -95,5 +96,14 @@ final galleryViewModelProvider =
     final ReceiptRepository<Receipt> receiptRepository =
         ref.watch(receiptRepositoryProvider);
     return GalleryViewmodel(receiptRepository: receiptRepository);
+  },
+);
+
+final searchViewModelProvider =
+    StateNotifierProvider.autoDispose<SearchViewmodel, List<Expense>>(
+  (ref) {
+    final ExpenseRepository<Expense> expenseRepository =
+        ref.watch(expenseRepositoryProvider);
+    return SearchViewmodel(expenseRepository: expenseRepository);
   },
 );

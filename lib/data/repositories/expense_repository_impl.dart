@@ -298,6 +298,9 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
         .descriptionElementStartsWith(searchText)
         .or()
         .descriptionElementEndsWith(searchText)
+        .or()
+        .subCategory((sub) => sub.nameContains(searchText,
+            caseSensitive: false)) // Search in subcategory name
         .findAll();
 
     //another way to do this!!

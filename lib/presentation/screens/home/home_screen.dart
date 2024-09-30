@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_expensetracker/navigation/app_navigation.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_expense_date.dart';
 import 'package:flutter_expensetracker/presentation/screens/expense_list/expense_list_screen.dart';
 import 'package:flutter_expensetracker/presentation/components/widget_header.dart';
@@ -31,7 +32,11 @@ class HomeScreen extends ConsumerWidget {
           (homeState.isLoading)
               ? const CircularProgressIndicator(color: Colors.teal)
               : IconButton(onPressed: () {}, icon: const Icon(Icons.sync)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search))
+          IconButton(
+              onPressed: () {
+                gotoSearch(context);
+              },
+              icon: const Icon(Icons.search))
         ],
       ),
       body: Padding(

@@ -10,6 +10,7 @@ import 'package:flutter_expensetracker/presentation/screens/filter/filter/filter
 import 'package:flutter_expensetracker/presentation/screens/gallery/gallery_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/home/home_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/image/full_image_screen.dart';
+import 'package:flutter_expensetracker/presentation/screens/search/search_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/settings/settings_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/stats/stats_screen.dart';
 import 'package:flutter_expensetracker/presentation/screens/wrapper/app_wrapper.dart';
@@ -175,6 +176,16 @@ class AppNavigation {
               tag: tag,
             );
           }),
+      GoRoute(
+        path: "/search",
+        name: "search",
+        pageBuilder: (context, state) {
+          return _buildTransitionpage(
+            key: state.pageKey,
+            child: const SearchScreen(),
+          );
+        },
+      ),
     ],
   );
 }
@@ -207,4 +218,8 @@ void goToFilterby(BuildContext context) {
 
 void gotoFilter(BuildContext context, int type) {
   context.pushNamed('filter', pathParameters: {'type': type.toString()});
+}
+
+void gotoSearch(BuildContext context) {
+  context.pushNamed('search');
 }

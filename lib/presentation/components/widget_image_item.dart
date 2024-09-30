@@ -18,7 +18,7 @@ class WidgetImageItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           image: DecorationImage(
             image: FileImage(file),
-            fit: BoxFit.cover,
+            // fit: BoxFit.cover,
           ),
         ),
         child: InkWell(
