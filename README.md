@@ -58,9 +58,11 @@ If you have any questions, feel free to reach out!
     <tr>
     <th>Gallery</th>
     <th>Settings</th>
+    <th>Search</th>
   </tr>
   <tr>
     <td><img src="media/gallery.png" height="25%"/></td>
     <td><img src="media/settings.png" height="25%"/></td>
+    <td><img src="media/search.png" height="25%"/></td>
   </tr>
 </table>
