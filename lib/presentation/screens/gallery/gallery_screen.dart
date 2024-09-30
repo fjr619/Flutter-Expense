@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -23,7 +22,6 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> {
   @override
   Widget build(BuildContext context) {
     final galleryState = ref.watch(galleryViewModelProvider);
-    log("== build gallery");
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -35,7 +33,11 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> {
           actions: [
             if (galleryState.receipts.isNotEmpty) ...{
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ref
+                        .read(galleryViewModelProvider.notifier)
+                        .clearAllReceipt();
+                  },
                   icon: const Icon(
                     Icons.delete_forever,
                     size: 30,
@@ -74,7 +76,10 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> {
                             },
                           ),
                         ),
-                        const Text("aaaaa")
+                        Text(
+                          receipt.name,
+                          style: const TextStyle(fontSize: 11),
+                        )
                       ],
                     );
                   },

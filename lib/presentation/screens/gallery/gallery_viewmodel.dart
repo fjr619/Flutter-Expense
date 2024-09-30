@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class GalleryViewmodel extends StateNotifier<GalleryState> {
   final ReceiptRepository<Receipt> receiptRepository;
   GalleryViewmodel({required this.receiptRepository}) : super(GalleryState()) {
-    log("== inti gallery vm");
     getAllReceipt();
   }
 
@@ -20,10 +19,13 @@ class GalleryViewmodel extends StateNotifier<GalleryState> {
 
     _receiptsSubscription = receiptRepository.getAllObjects().listen(
       (event) {
-        log("==getallreceipt ${event.length}");
         state = state.copyWith(receipts: event);
       },
     );
+  }
+
+  void clearAllReceipt() async {
+    receiptRepository.clearGallery(state.receipts);
   }
 
   @override
