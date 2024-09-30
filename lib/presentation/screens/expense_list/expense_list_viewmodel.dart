@@ -45,6 +45,13 @@ class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
     await expenseRepository.deletObject(expense);
   }
 
+  Future<void> deleteAll() async {
+    await Future.wait([
+      expenseRepository.clearData(),
+      receiptRepository.clearGallery(),
+    ]);
+  }
+
   void resetExpenseFilter() {
     state = state.copyWith(expensesFilter: []);
   }

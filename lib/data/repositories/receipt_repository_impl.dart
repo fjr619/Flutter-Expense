@@ -85,12 +85,19 @@ class ReceiptRepositoryImpl extends ReceiptRepository<Receipt> {
     return all;
   }
 
+  // @override
+  // Future<void> clearGallery(List<Receipt> receipts) async {
+  //   await isar.writeTxn(() async {
+  //     for (int i = 0; i < receipts.length; i++) {
+  //       await isar.receipts.delete(receipts[i].id);
+  //     }
+  //   });
+  // }
+
   @override
-  Future<void> clearGallery(List<Receipt> receipts) async {
+  Future<void> clearGallery() async {
     await isar.writeTxn(() async {
-      for (int i = 0; i < receipts.length; i++) {
-        await isar.receipts.delete(receipts[i].id);
-      }
+      await isar.receipts.clear();
     });
   }
 }

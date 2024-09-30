@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter_expensetracker/domain/models/receipt.dart';
 import 'package:flutter_expensetracker/domain/repositories/receipt_repository.dart';
@@ -25,7 +24,7 @@ class GalleryViewmodel extends StateNotifier<GalleryState> {
   }
 
   void clearAllReceipt() async {
-    receiptRepository.clearGallery(state.receipts);
+    receiptRepository.clearGallery();
   }
 
   @override
