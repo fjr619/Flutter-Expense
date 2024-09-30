@@ -46,10 +46,7 @@ class ExpenseListViewmodel extends StateNotifier<ExpenseListState> {
   }
 
   Future<void> deleteAll() async {
-    await Future.wait([
-      expenseRepository.clearData(),
-      receiptRepository.clearGallery(),
-    ]);
+    await expenseRepository.clearData();
   }
 
   void resetExpenseFilter() {

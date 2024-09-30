@@ -257,7 +257,7 @@ class ExpenseRepositoryImpl extends ExpenseRepository<Expense> {
   @override
   Future<void> clearData() async {
     await isar.writeTxn(() async {
-      await isar.expenses.clear();
+      await isar.clear();
     });
   }
 

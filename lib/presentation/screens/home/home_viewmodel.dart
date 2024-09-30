@@ -36,8 +36,17 @@ class HomeViewmodel extends StateNotifier<HomeState> {
 
     _budgetSubscription =
         budgetRepository.getObjectByDate(month: month, year: year).listen(
-      (budget) {
-        state = state.copyWith(budget: budget);
+      (budget) async {
+        if (budget != null) {
+          state = state.copyWith(budget: budget);
+        } else {
+          final budget = Budget()
+            ..month = DateTime.now().month
+            ..year = DateTime.now().year
+            ..amount = 0;
+
+          await budgetRepository.createObject(budget);
+        }
       },
     );
 
